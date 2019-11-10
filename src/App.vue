@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to aba dashboard App"/>
+    <HelloWorld msg="Welcome to aba dashboard App in SG"/>
   </div>
 </template>
 
