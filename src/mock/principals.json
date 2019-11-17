@@ -1,0 +1,32 @@
+{
+    "items": [
+        {
+            "name": "赵校长",
+            "school": "学校A",
+            "email": "zhao@aba-a.com",
+            "invitor": "owner@aba.com",
+            "status": "Accepted"
+        },
+        {
+            "name": "钱校长",
+            "school": "学校B",
+            "email": "qian@aba-b.com",
+            "invitor": "owner@aba.com",
+            "status": "Accepted"
+        },
+        {
+            "name": "孙校长",
+            "school": "学校C",
+            "email": "sun@aba-c.com",
+            "invitor": "owner@aba.com",
+            "status": "Accepted"
+        },
+        {
+            "name": "李校长",
+            "school": "学校D",
+            "email": "li@aba-d.com",
+            "invitor": "owner@aba.com",
+            "status": "Pending"
+        }
+    ]
+}
