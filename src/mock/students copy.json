@@ -1,0 +1,24 @@
+{
+    "items": [
+        {
+            "name": "赵同学",
+            "gender": "男",
+            "teacher": "zhao@teacher.com"
+        },
+        {
+            "name": "钱同学",
+            "gender": "男",
+            "teacher": "zhao@teacher.com"
+        },
+        {
+            "name": "孙同学",
+            "gender": "女",
+            "teacher": "zhao@teacher.com"
+        },
+        {
+            "name": "李同学",
+            "gender": "男",
+            "teacher": "qian@teacher.com"
+        }
+    ]
+}

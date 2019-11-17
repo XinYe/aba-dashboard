@@ -1,20 +1,26 @@
 <template>
   <div>
-    <div>
+    <div style="display: flex">
+      <i class="el-icon-back" />
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">{{owner.name}}</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <h1/>
+    <div style="display: flex">
       <i class="el-icon-user"></i>
-      <span>{{owner.name}}</span>
+      <span>{{principal.name}}</span>
       <span>-</span>
-      <span>({{owner.email}})</span>
+      <span>({{principal.email}})</span>
     </div>
     <h1 />
     <div>
-      <i class="el-icon-school"></i>
+      <i class="el-icon-medal"></i>
     </div>
 
-    <el-table :data="principals" stripe style="width: 100%" @row-dblclick="onRowDblClick">
-      <el-table-column label="校长" prop="name"></el-table-column>
+    <el-table :data="mentors" stripe style="width: 100%" @row-dblclick="onRowClick">
+      <el-table-column label="督导" prop="name"></el-table-column>
       <el-table-column label="Email" prop="email"></el-table-column>
-      <el-table-column label="学校" prop="school"></el-table-column>
       <el-table-column label="状态" prop="status"></el-table-column>
       <el-table-column align="right">
         <template slot="header">
@@ -39,16 +45,13 @@
 
     <div class="table-row-note">* 双击表格行跳转至下一级</div>
 
-    <el-dialog title="校长信息" :visible.sync="inviteDialogVisible">
+    <el-dialog title="督导信息" :visible.sync="inviteDialogVisible">
       <el-form :model="inviteForm">
         <el-form-item label="姓名" :label-width="formLabelWidth">
           <el-input v-model="inviteForm.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Email" :label-width="formLabelWidth">
           <el-input v-model="inviteForm.email" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="学校名称" :label-width="formLabelWidth">
-          <el-input v-model="inviteForm.school" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -65,10 +68,13 @@ export default {
     owner() {
       return this.$data.appContext.owner;
     },
-    principals() {
-      const owner = this.owner;
-      return this.$data.appContext.principals.filter(principal => {
-        return principal.invitor === owner.email;
+    principal() {
+      return this.$data.appContext.curPrincipal;
+    },
+    mentors() {
+      const principal = this.principal;
+      return this.$data.appContext.mentors.filter(mentor => {
+        return mentor.invitor === principal.email;
       });
     }
   },
@@ -77,47 +83,41 @@ export default {
       inviteDialogVisible: false,
       inviteForm: {
         name: "",
-        email: "",
-        school: ""
+        email: ""
       },
       formLabelWidth: "80px"
     };
   },
   methods: {
     OnInvite() {
-      if (
-        !this.inviteForm.email ||
-        !this.inviteForm.name ||
-        !this.inviteForm.school
-      ) {
+      if (!this.inviteForm.email || !this.inviteForm.name) {
         this.$message("各属性信息不能为空，请重新输入.");
         return;
       }
-      const principals = this.$data.appContext.principals;
-      const isExist = principals.find(principal => {
-        return principal.email === this.inviteForm.email;
+      const mentors = this.$data.appContext.mentors;
+      const isExist = mentors.find(mentor => {
+        return mentor.email === this.inviteForm.email;
       });
       if (isExist) {
         this.$message("Email信息已存在，请重新输入.");
         return;
       }
-      this.$data.appContext.principals.push({
-        invitor: this.owner.email,
+      this.$data.appContext.mentors.push({
+        invitor: this.principal.email,
         name: this.inviteForm.name,
         email: this.inviteForm.email,
-        school: this.inviteForm.school,
         status: "Pending"
       });
       this.inviteDialogVisible = false;
     },
-    onRowDblClick(event) {
-      this.$data.appContext.curPrincipal = this.$data.appContext.principals.find(
-        principal => {
-          return principal.email === event.email;
+    onRowClick(event) {
+      this.$data.appContext.curMentor = this.$data.appContext.mentors.find(
+        mentor => {
+          return mentor.email === event.email;
         }
       );
       this.$router.push({
-        name: "principal"
+        name: "mentor"
       });
     },
     handleEdit(index, row) {
@@ -130,12 +130,12 @@ export default {
         type: "warning"
       })
         .then(() => {
-          const principals = this.$data.appContext.principals;
-          const index = principals.findIndex(principal => {
-            return principal.email === row.email;
+          const mentors = this.$data.appContext.mentors;
+          const index = mentors.findIndex(mentor => {
+            return mentor.email === row.email;
           });
           if (index >= 0) {
-            principals.splice(index, 1);
+            mentors.splice(index, 1);
           }
         })
         .catch(() => {

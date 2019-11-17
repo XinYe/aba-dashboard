@@ -2,10 +2,11 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 
-// import { getOwner, getPrincipals } from "@/utils/MockUtil";
-
 const getOwner = require('@/utils/MockUtil').getOwner;
 const getPrincipals = require('@/utils/MockUtil').getPrincipals;
+const getMentors = require('@/utils/MockUtil').getMentors;
+const getTeachers = require('@/utils/MockUtil').getTeachers;
+const getStudents = require('@/utils/MockUtil').getStudents;
 
 Vue.use(VueRouter);
 
@@ -14,6 +15,36 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
+  },
+  {
+    path: '/principal',
+    name: 'principal',
+    component: () => import('@/components/Principal.vue'),
+    props: true
+  },
+  {
+    path: '/mentor',
+    name: 'mentor',
+    component: () => import('@/components/Mentor.vue'),
+    props: true
+  },
+  {
+    path: '/teacher',
+    name: 'teacher',
+    component: () => import('@/components/Teacher.vue'),
+    props: true
+  },
+  {
+    path: '/student',
+    name: 'student',
+    component: () => import('@/components/Student.vue'),
+    props: true
+  },
+  {
+    path: '/chart',
+    name: 'chart',
+    component: () => import('@/components/Chart.vue'),
+    props: true
   },
   {
     path: '/about',
@@ -31,21 +62,23 @@ const router = new VueRouter({
   routes,
 });
 
-let appData = {
-  owner: getOwner()
-};
+let owner = getOwner();
+let principals = getPrincipals();
+let mentors = getMentors();
+let teachers = getTeachers();
+let students = getStudents();
 
 let appContext = {
-  getPrincipals: (ownerEmail: string) => {
-    return getPrincipals(ownerEmail);
-  },
-  curPrincipal: null
-}
+  owner: owner,
+  principals: principals,
+  mentors: mentors,
+  teachers: teachers,
+  students: students
+};
 
 Vue.mixin({
   data() {
     return {
-      appData: appData,
       appContext: appContext
     };
   }

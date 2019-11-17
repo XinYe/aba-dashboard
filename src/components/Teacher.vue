@@ -1,21 +1,28 @@
 <template>
   <div>
-    <div>
+    <div style="display: flex">
+      <i class="el-icon-back" />
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">{{owner.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/principal' }">{{principal.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/mentor' }">{{mentor.name}}</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <h1/>
+    <div style="display: flex">
       <i class="el-icon-user"></i>
-      <span>{{owner.name}}</span>
+      <span>{{teacher.name}}</span>
       <span>-</span>
-      <span>({{owner.email}})</span>
+      <span>({{teacher.email}})</span>
     </div>
     <h1 />
     <div>
-      <i class="el-icon-school"></i>
+      <i class="el-icon-date"></i>
     </div>
 
-    <el-table :data="principals" stripe style="width: 100%" @row-dblclick="onRowDblClick">
-      <el-table-column label="校长" prop="name"></el-table-column>
-      <el-table-column label="Email" prop="email"></el-table-column>
-      <el-table-column label="学校" prop="school"></el-table-column>
-      <el-table-column label="状态" prop="status"></el-table-column>
+    <el-table :data="students" stripe style="width: 100%" @row-dblclick="onRowClick">
+      <el-table-column label="学生" prop="name"></el-table-column>
+      <el-table-column label="性别" prop="gender"></el-table-column>
       <el-table-column align="right">
         <template slot="header">
           <el-button
@@ -39,16 +46,13 @@
 
     <div class="table-row-note">* 双击表格行跳转至下一级</div>
 
-    <el-dialog title="校长信息" :visible.sync="inviteDialogVisible">
+    <el-dialog title="学生信息" :visible.sync="inviteDialogVisible">
       <el-form :model="inviteForm">
         <el-form-item label="姓名" :label-width="formLabelWidth">
           <el-input v-model="inviteForm.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Email" :label-width="formLabelWidth">
-          <el-input v-model="inviteForm.email" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="学校名称" :label-width="formLabelWidth">
-          <el-input v-model="inviteForm.school" autocomplete="off"></el-input>
+        <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-input v-model="inviteForm.gender" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -65,10 +69,19 @@ export default {
     owner() {
       return this.$data.appContext.owner;
     },
-    principals() {
-      const owner = this.owner;
-      return this.$data.appContext.principals.filter(principal => {
-        return principal.invitor === owner.email;
+    principal() {
+      return this.$data.appContext.curPrincipal;
+    },
+    mentor() {
+      return this.$data.appContext.curMentor;
+    },
+    teacher() {
+      return this.$data.appContext.curTeacher;
+    },
+    students() {
+      const teacher = this.teacher;
+      return this.$data.appContext.students.filter(student => {
+        return student.teacher === teacher.email;
       });
     }
   },
@@ -77,47 +90,40 @@ export default {
       inviteDialogVisible: false,
       inviteForm: {
         name: "",
-        email: "",
-        school: ""
+        gender: ""
       },
       formLabelWidth: "80px"
     };
   },
   methods: {
     OnInvite() {
-      if (
-        !this.inviteForm.email ||
-        !this.inviteForm.name ||
-        !this.inviteForm.school
-      ) {
+      if (!this.inviteForm.name || !this.inviteForm.gendar) {
         this.$message("各属性信息不能为空，请重新输入.");
         return;
       }
-      const principals = this.$data.appContext.principals;
-      const isExist = principals.find(principal => {
-        return principal.email === this.inviteForm.email;
+      const students = this.$data.appContext.students;
+      const isExist = students.find(student => {
+        return student.name === this.inviteForm.name;
       });
       if (isExist) {
-        this.$message("Email信息已存在，请重新输入.");
+        this.$message("姓名信息已存在，请重新输入.");
         return;
       }
-      this.$data.appContext.principals.push({
-        invitor: this.owner.email,
+      this.$data.appContext.students.push({
+        teacher: this.teacher.email,
         name: this.inviteForm.name,
-        email: this.inviteForm.email,
-        school: this.inviteForm.school,
-        status: "Pending"
+        gender: this.inviteForm.gender
       });
       this.inviteDialogVisible = false;
     },
-    onRowDblClick(event) {
-      this.$data.appContext.curPrincipal = this.$data.appContext.principals.find(
-        principal => {
-          return principal.email === event.email;
+    onRowClick(event) {
+      this.$data.appContext.curStudent = this.$data.appContext.students.find(
+        student => {
+          return student.name === event.name;
         }
       );
       this.$router.push({
-        name: "principal"
+        name: "student"
       });
     },
     handleEdit(index, row) {
@@ -130,12 +136,12 @@ export default {
         type: "warning"
       })
         .then(() => {
-          const principals = this.$data.appContext.principals;
-          const index = principals.findIndex(principal => {
-            return principal.email === row.email;
+          const students = this.$data.appContext.students;
+          const index = students.findIndex(student => {
+            return student.name === row.name;
           });
           if (index >= 0) {
-            principals.splice(index, 1);
+            students.splice(index, 1);
           }
         })
         .catch(() => {

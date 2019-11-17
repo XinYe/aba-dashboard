@@ -1,0 +1,95 @@
+{
+    "items": [
+        {
+            "name": "赵同学",
+            "teacher": "zhao@teacher.com",
+            "gender": "男",
+            "age": "6",
+            "diagnosis": "125",
+            "skills": [
+                {
+                    "name": "打招呼",
+                    "activities": [
+                        {
+                            "datetime": "2019-1-1",
+                            "rate": 10
+                        },
+                        {
+                            "datetime": "2019-2-1",
+                            "rate": 50
+                        },
+                        {
+                            "datetime": "2019-3-1",
+                            "rate": 70
+                        },
+                        {
+                            "datetime": "2019-4-1",
+                            "rate": 90
+                        },
+                        {
+                            "datetime": "2019-5-1",
+                            "rate": 70
+                        },
+                        {
+                            "datetime": "2019-6-1",
+                            "rate": 80
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "钱同学",
+            "teacher": "zhao@teacher.com",
+            "gender": "男",
+            "age": "8",
+            "diagnosis": "120",
+            "skills": [
+                {
+                    "name": "打招呼",
+                    "activities": [
+                        {
+                            "datetime": "2019-1-1",
+                            "rate": 50
+                        },
+                        {
+                            "datetime": "2019-3-1",
+                            "rate": 90
+                        }
+                    ]
+                },
+                {
+                    "name": "坐地铁",
+                    "activities": [
+                        {
+                            "datetime": "2019-1-1",
+                            "rate": 20
+                        },
+                        {
+                            "datetime": "2019-3-1",
+                            "rate": 30
+                        },
+                        {
+                            "datetime": "2019-4-1",
+                            "rate": 50
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "孙同学",
+            "teacher": "zhao@teacher.com",
+            "gender": "女",
+            "age": "5",
+            "diagnosis": "80"
+        },
+        {
+            "name": "李同学",
+            "teacher": "qian@teacher.com",
+            "gender": "男",
+            "age": "13",
+            "diagnosis": "20"
+        }
+    ]
+}
