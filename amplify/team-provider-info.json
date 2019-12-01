@@ -9,6 +9,11 @@
             "UnauthRoleName": "amplify-aba-dashboard-abaenv-151544-unauthRole",
             "StackName": "amplify-aba-dashboard-abaenv-151544",
             "StackId": "arn:aws:cloudformation:ap-southeast-1:289592769986:stack/amplify-aba-dashboard-abaenv-151544/64850890-140a-11ea-9a99-0a2bfeee7532"
+        },
+        "categories": {
+            "auth": {
+                "abadashboard42c01b8c": {}
+            }
         }
     }
 }

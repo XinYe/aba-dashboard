@@ -1,1 +1,9 @@
-{}
+{
+	"auth": {
+		"abadashboard42c01b8c": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}
