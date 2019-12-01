@@ -22,6 +22,7 @@ export default {
       this.$store.dispatch('setUser', user)
     } catch (err) {
       console.log('error: ', err)
+      this.$router.push('/')
     }
   },
   computed: {
