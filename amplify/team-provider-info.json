@@ -1,0 +1,14 @@
+{
+    "abaenv": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-aba-dashboard-abaenv-151544-authRole",
+            "UnauthRoleArn": "arn:aws:iam::289592769986:role/amplify-aba-dashboard-abaenv-151544-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::289592769986:role/amplify-aba-dashboard-abaenv-151544-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "amplify-aba-dashboard-abaenv-151544-deployment",
+            "UnauthRoleName": "amplify-aba-dashboard-abaenv-151544-unauthRole",
+            "StackName": "amplify-aba-dashboard-abaenv-151544",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:289592769986:stack/amplify-aba-dashboard-abaenv-151544/64850890-140a-11ea-9a99-0a2bfeee7532"
+        }
+    }
+}
