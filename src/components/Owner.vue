@@ -120,7 +120,7 @@ export default {
         name: "principal"
       });
     },
-    handleEdit(index, row) {
+    handleEdit() {
       this.$message("Coming soon.");
     },
     handleDelete(index, row) {

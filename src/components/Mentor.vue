@@ -124,7 +124,7 @@ export default {
         name: "teacher"
       });
     },
-    handleEdit(index, row) {
+    handleEdit() {
       this.$message("Coming soon.");
     },
     handleDelete(index, row) {

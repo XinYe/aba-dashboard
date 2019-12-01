@@ -69,7 +69,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    OnButtonClick(event) {
+    OnButtonClick() {
       this.$router.push({
         name: "chart",
         params: {
