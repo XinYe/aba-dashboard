@@ -5,7 +5,7 @@
       <div class='form'>
         <input
           class='input'
-          placeholder='Username'
+          placeholder='Email'
           v-model="form.username"
         />
         <input

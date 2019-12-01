@@ -5,19 +5,19 @@
       <div class='form' v-if="phase === Number(0)">
         <input
           class='input'
-          v-model="form.username"
-          placeholder='Username'
+          v-model="form.attributes.email"
+          placeholder='Email'
         />
         <input
           class='input'
           v-model="form.password"
-          placeholder='Password'
+          placeholder='Password (6 characters)'
           type='password'
         />
         <input
           class='input'
-          v-model="form.attributes.email"
-          placeholder='Email'
+          v-model="form.username"
+          placeholder='Username'
         />
         <input
           class='input'

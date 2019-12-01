@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <div>
+  <div class="page-body">
+    <div class="nav-header">
       <i class="el-icon-user"></i>
-      <span>{{owner.name}}</span>
-      <span>-</span>
-      <span>({{owner.email}})</span>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/owner' }">{{owner.name}} ({{loginUser.email}})</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <h1 />
     <div>
-      <i class="el-icon-school"></i>
+      <i class="el-icon-school">校长列表</i>
     </div>
 
     <el-table :data="principals" stripe style="width: 100%" @row-dblclick="onRowDblClick">
@@ -62,6 +62,12 @@
 <script>
 export default {
   computed: {
+    loginUser() {
+      return {
+        name: this.$data.appContext.owner.name,
+        email: this.$store.state.user.attributes.email
+      };
+    },
     owner() {
       return this.$data.appContext.owner;
     },
@@ -150,5 +156,11 @@ export default {
 .table-row-note {
   color: gray;
   font-size: 14px;
+}
+.page-body {
+  margin: 20px;
+}
+.nav-header {
+  display: flex;
 }
 </style>

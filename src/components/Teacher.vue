@@ -1,23 +1,17 @@
 <template>
-  <div>
-    <div style="display: flex">
-      <i class="el-icon-back" />
+  <div class="page-body">
+    <div class="nav-header">
+      <i class="el-icon-user"></i>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/' }">{{owner.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/owner' }">{{owner.name}}</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/principal' }">{{principal.name}}</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/mentor' }">{{mentor.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/teacher' }">{{teacher.name}} ({{teacher.email}})</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <h1/>
-    <div style="display: flex">
-      <i class="el-icon-user"></i>
-      <span>{{teacher.name}}</span>
-      <span>-</span>
-      <span>({{teacher.email}})</span>
-    </div>
-    <h1 />
     <div>
-      <i class="el-icon-date"></i>
+      <i class="el-icon-view">学生列表</i>
     </div>
 
     <el-table :data="students" stripe style="width: 100%" @row-dblclick="onRowClick">

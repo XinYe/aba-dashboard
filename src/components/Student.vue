@@ -1,25 +1,20 @@
 <template>
-  <div>
-    <div style="display: flex">
-      <i class="el-icon-back" />
+  <div class="page-body">
+    <div class="nav-header">
+      <i class="el-icon-user"></i>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/' }">{{owner.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/owner' }">{{owner.name}}</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/principal' }">{{principal.name}}</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/mentor' }">{{mentor.name}}</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/teacher' }">{{teacher.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/student' }">{{student.name}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <h1/>
-    <div style="display: flex">
-      <i class="el-icon-basketball"></i>
-      <span>{{student.name}}</span>
-    </div>
-    <h1 />
     <div>
-      <i class="el-icon-date"></i>
+      <i class="el-icon-basketball">技能列表</i>
     </div>
 
-    <h5>学生技能</h5>
     <el-tabs v-model="activeName">
       <el-tab-pane
         v-for="(skill, index) in skills"

@@ -1,21 +1,15 @@
 <template>
-  <div>
-    <div style="display: flex">
-      <i class="el-icon-back" />
+  <div class="page-body">
+    <div class="nav-header">
+      <i class="el-icon-user"></i>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/' }">{{owner.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/owner' }">{{owner.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/principal' }">{{principal.name}} ({{principal.email}})</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <h1/>
-    <div style="display: flex">
-      <i class="el-icon-user"></i>
-      <span>{{principal.name}}</span>
-      <span>-</span>
-      <span>({{principal.email}})</span>
-    </div>
-    <h1 />
     <div>
-      <i class="el-icon-medal"></i>
+      <i class="el-icon-medal">督导列表</i>
     </div>
 
     <el-table :data="mentors" stripe style="width: 100%" @row-dblclick="onRowClick">

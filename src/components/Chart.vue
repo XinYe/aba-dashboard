@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin: 20px">
     <el-page-header @back="goBack" content="Skill Trends"></el-page-header>
     <h1/>
     <line-chart :columns="columns" :datasets="datasets"/>

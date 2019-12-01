@@ -47,6 +47,7 @@ export default {
 <style scoped>
 .link-container {
   margin-top: 30;
+  text-align: center;
 }
 .auth {
   display: flex;
