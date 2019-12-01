@@ -14,7 +14,7 @@
       <i class="el-icon-view">学生列表</i>
     </div>
 
-    <el-table :data="students" stripe style="width: 100%" @row-dblclick="onRowClick">
+    <el-table :data="students" stripe style="width: 100%" @row-click="onRowClick">
       <el-table-column label="学生" prop="name"></el-table-column>
       <el-table-column label="性别" prop="gender"></el-table-column>
       <el-table-column align="right">
@@ -37,8 +37,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <div class="table-row-note">* 双击表格行跳转至下一级</div>
 
     <el-dialog title="学生信息" :visible.sync="inviteDialogVisible">
       <el-form :model="inviteForm">
@@ -110,10 +108,13 @@ export default {
       });
       this.inviteDialogVisible = false;
     },
-    onRowClick(event) {
+    onRowClick(row, column) {
+      if (!column.property) {
+        return;
+      }
       this.$data.appContext.curStudent = this.$data.appContext.students.find(
         student => {
-          return student.name === event.name;
+          return student.name === row.name;
         }
       );
       this.$router.push({

@@ -12,7 +12,7 @@
       <i class="el-icon-medal">督导列表</i>
     </div>
 
-    <el-table :data="mentors" stripe style="width: 100%" @row-dblclick="onRowClick">
+    <el-table :data="mentors" stripe style="width: 100%" @row-click="onRowClick">
       <el-table-column label="督导" prop="name"></el-table-column>
       <el-table-column label="Email" prop="email"></el-table-column>
       <el-table-column label="状态" prop="status"></el-table-column>
@@ -36,8 +36,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <div class="table-row-note">* 双击表格行跳转至下一级</div>
 
     <el-dialog title="督导信息" :visible.sync="inviteDialogVisible">
       <el-form :model="inviteForm">
@@ -104,10 +102,13 @@ export default {
       });
       this.inviteDialogVisible = false;
     },
-    onRowClick(event) {
+    onRowClick(row, column) {
+      if (!column.property) {
+        return;
+      }
       this.$data.appContext.curMentor = this.$data.appContext.mentors.find(
         mentor => {
-          return mentor.email === event.email;
+          return mentor.email === row.email;
         }
       );
       this.$router.push({
