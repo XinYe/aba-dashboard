@@ -1,0 +1,54 @@
+type SkillSet @model {
+  id: ID!
+  name: String!
+  skills: [Skill] @connection(name: "SkillSetSkills")
+}
+type Skill @model {
+  id: ID!
+  name: String!
+  skillset: SkillSet @connection(name: "SkillSetSkills")
+}
+type User @model
+@key(name: "byEmail", fields: ["email"], queryField: "getUserByEmail") {
+  id: ID!
+  email: String!
+  name: String!
+  role: String
+}
+type Admin @model
+@key(name: "byEmail", fields: ["email"], queryField: "getAdminByEmail") {
+  id: ID!
+  email: String!
+  members: [Principal] @connection(name: "AdminPrincipals")
+}
+type Principal @model {
+  id: ID!
+  email: String!
+  admin: Admin @connection(name: "AdminPrincipals")
+  members: [Mentor] @connection(name: "PrincipalMentors")
+}
+type Mentor @model {
+  id: ID!
+  email: String!
+  principal: Principal @connection(name: "PrincipalMentors")
+  members: [Teacher] @connection(name: "MentorTeachers")
+}
+type Teacher @model {
+  id: ID!
+  email: String!
+  mentor: Mentor @connection(name: "MentorTeachers")
+  members: [Student] @connection(name: "TeacherStudents")
+}
+type Student @model {
+  id: ID!
+  name: String!
+  teacher: Teacher @connection(name: "TeacherStudents")
+  activities: [Activity] @connection(name: "StudentActivities")
+}
+type Activity @model {
+  id: ID!
+  skill: ID!
+  datetime: String!
+  rate: String!
+  student: Student @connection(name: "StudentActivities")
+}

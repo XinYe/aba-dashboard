@@ -4,7 +4,8 @@
       <img class='header-img' src="./assets/logo.png" />
       <router-link to="/welcome" class='heading'>ABA Dashboard</router-link>
       <div class="header-menu">
-        <router-link class='link' to="/owner" v-if="isAuthenticated">Me</router-link>
+        <router-link class='link' to="/home" v-if="isAuthenticated">Me</router-link>
+        <router-link class='link' to="/config" v-if="isAuthenticated">Configuration</router-link>
         <p class='link' v-on:click="signOut" v-if="isAuthenticated">Sign Out</p>
         <router-link class='link' to="/" v-if="!isAuthenticated">Sign In</router-link>
       </div>

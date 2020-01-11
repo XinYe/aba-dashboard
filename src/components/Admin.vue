@@ -3,7 +3,7 @@
     <div class="nav-header">
       <i class="el-icon-user"></i>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/owner' }">{{owner.name}} ({{loginUser.email}})</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/home' }">{{admin.name}} ({{admin.email}})</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <h1 />
@@ -59,20 +59,19 @@
 
 <script>
 export default {
+  props: {
+    id: String
+  },
   computed: {
-    loginUser() {
+    admin() {
       return {
-        name: this.$data.appContext.owner.name,
-        email: this.$store.state.user.attributes.email
+        email: this.id
       };
     },
-    owner() {
-      return this.$data.appContext.owner;
-    },
     principals() {
-      const owner = this.owner;
+      const admin = this.admin;
       return this.$data.appContext.principals.filter(principal => {
-        return principal.invitor === owner.email;
+        return principal.invitor === admin.email;
       });
     }
   },
@@ -106,7 +105,7 @@ export default {
         return;
       }
       this.$data.appContext.principals.push({
-        invitor: this.owner.email,
+        invitor: this.admin.email,
         name: this.inviteForm.name,
         email: this.inviteForm.email,
         school: this.inviteForm.school,
@@ -154,10 +153,6 @@ export default {
 </script>
 
 <style>
-.table-row-note {
-  color: gray;
-  font-size: 14px;
-}
 .page-body {
   margin: 20px;
 }

@@ -4,28 +4,28 @@
             "name": "赵校长",
             "school": "学校A",
             "email": "zhao@school-a.com",
-            "invitor": "owner@aba.com",
+            "invitor": "amleaf@126.com",
             "status": "Accepted"
         },
         {
             "name": "钱校长",
             "school": "学校B",
             "email": "qian@school-b.com",
-            "invitor": "owner@aba.com",
+            "invitor": "amleaf@126.com",
             "status": "Accepted"
         },
         {
             "name": "孙校长",
             "school": "学校C",
             "email": "sun@school-c.com",
-            "invitor": "owner@aba.com",
+            "invitor": "amleaf@126.com",
             "status": "Accepted"
         },
         {
             "name": "李校长",
             "school": "学校D",
             "email": "li@school-d.com",
-            "invitor": "owner@aba.com",
+            "invitor": "amleaf@126.com",
             "status": "Pending"
         }
     ]

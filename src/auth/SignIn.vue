@@ -31,7 +31,9 @@ export default {
         const user = await this.$Amplify.Auth.signIn(this.form.username, this.form.password)
         this.$store.dispatch('setIsAuthenticated', true)
         this.$store.dispatch('setUser', user)
-        this.$router.push('owner')
+        this.$router.push({
+          name: 'home'
+        });
       } catch (err) {
         console.log('error: ', err)
       }
@@ -40,8 +42,8 @@ export default {
   data() {
   return {
     form: {
-      username: '',
-      password: '',
+      username: 'amleaf@126.com',
+      password: 'Aba123456',
     }
   }
 }

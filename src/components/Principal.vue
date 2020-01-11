@@ -3,7 +3,6 @@
     <div class="nav-header">
       <i class="el-icon-user"></i>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/owner' }">{{owner.name}}</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/principal' }">{{principal.name}} ({{principal.email}})</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -57,9 +56,6 @@
 <script>
 export default {
   computed: {
-    owner() {
-      return this.$data.appContext.owner;
-    },
     principal() {
       return this.$data.appContext.curPrincipal;
     },

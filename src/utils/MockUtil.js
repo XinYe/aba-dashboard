@@ -1,11 +1,10 @@
-import Owner from '../mock/owner.json';
 import Principals from '../mock/principals.json';
 import Mentors from '../mock/mentors.json';
 import Teachers from '../mock/teachers.json';
 import Students from '../mock/students.json';
 
-export function getOwner() {
-    return Owner;
+export function getAdmin() {
+    return {};
 }
 
 export function getPrincipals() {

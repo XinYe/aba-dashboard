@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Welcome from '../views/Welcome.vue';
+import Home from '../views/Home.vue';
 import Auth from '../auth/Auth.vue';
 
-const getOwner = require('@/utils/MockUtil').getOwner;
+const getAdmin = require('@/utils/MockUtil').getAdmin;
 const getPrincipals = require('@/utils/MockUtil').getPrincipals;
 const getMentors = require('@/utils/MockUtil').getMentors;
 const getTeachers = require('@/utils/MockUtil').getTeachers;
@@ -21,9 +22,21 @@ const routes = [
     component: Auth
   },
   {
-    path: '/owner',
-    name: 'owner',
-    component: () => import('@/components/Owner.vue'),
+    path: '/home',
+    name: 'home',
+    component: Home,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/config',
+    name: 'config',
+    component: () => import('@/components/Config.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/components/Admin.vue'),
     meta: { requiresAuth: true },
     props: true
   },
@@ -78,14 +91,14 @@ const router = new VueRouter({
   routes,
 });
 
-let owner = getOwner();
+let admin = getAdmin();
 let principals = getPrincipals();
 let mentors = getMentors();
 let teachers = getTeachers();
 let students = getStudents();
 
 let appContext = {
-  owner: owner,
+  admin: admin,
   principals: principals,
   mentors: mentors,
   teachers: teachers,
