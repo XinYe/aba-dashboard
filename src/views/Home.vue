@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <component :is="loginRoleComponent" :id="loginUser.email"></component>
+    <component :is="loginRoleComponent" :email="loginUser.email"></component>
   </div>
 </template>
 

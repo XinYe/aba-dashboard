@@ -3,7 +3,7 @@
     <div class="nav-header">
       <i class="el-icon-user"></i>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/home' }">{{admin.name}} ({{admin.email}})</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/home' }">{{admin.email}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <h1 />
@@ -60,12 +60,12 @@
 <script>
 export default {
   props: {
-    id: String
+    email: String
   },
   computed: {
     admin() {
       return {
-        email: this.id
+        email: this.email
       };
     },
     principals() {
