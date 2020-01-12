@@ -2,13 +2,13 @@
   <div class="page-body">
     <el-table
       :data="skillsets"
-      style="width: 100%"
       row-key="id"
       lazy
       border
       default-expand-all
-      :tree-props="{children: 'skills', hasChildren: 'hasSkill'}">
-      <el-table-column prop="name" label="技能类型及名称"/>
+      :tree-props="{children: 'skills', hasChildren: 'hasSkill'}"
+    >
+      <el-table-column prop="name" label="技能类型及名称" />
       <el-table-column align="right" width="200">
         <template slot="header">
           <el-button size="mini" type="primary" icon="el-icon-plus" @click="onNewSkillSet()" />
@@ -31,7 +31,7 @@
             size="mini"
             type="danger"
             icon="el-icon-delete"
-            @click="onDeleteSkillSet(scope.row)"
+            @click="onDeleteSkillSetOrSkill(scope.row)"
           />
         </template>
       </el-table-column>
@@ -118,22 +118,20 @@ export default {
         this.$Amplify.graphqlOperation(listSkillSets, {})
       )
         .then(res => {
-          this.skillsets = [];
+          const skillsets = [];
           res.data.listSkillSets.items.forEach(skillSet => {
-            if (!skillSet.skills.items) {
-              skillSet.skills.items = [];
-            }
             const skills = skillSet.skills.items;
             skills.forEach(skill => {
               skill.skillSet = skillSet;
             });
-            this.skillsets.push({
+            skillsets.push({
               id: skillSet.id,
               name: skillSet.name,
               hasSkill: skills.length > 0,
               skills: skills
             });
           });
+          this.skillsets = skillsets;
           console.info(`SkillSets successfully listed`, this.skillsets);
         })
         .catch(e => {
@@ -185,6 +183,14 @@ export default {
         skill: {}
       };
     },
+    onNewSkill(skillSet) {
+      this.dialog = {
+        visible: true,
+        mode: SkillEditMode.Skill_New,
+        skillSet: skillSet,
+        skill: {}
+      };
+    },
     onEditSkillSetOrSkill(skillSetOrSkill) {
       this.dialog = {
         visible: true,
@@ -200,7 +206,7 @@ export default {
         this.dialog.mode = SkillEditMode.Skill_Edit;
       }
     },
-    onDeleteSkillSet(skillSetOrSkill) {
+    onDeleteSkillSetOrSkill(skillSetOrSkill) {
       this.$confirm("确认删除?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -217,19 +223,13 @@ export default {
           // do nothing for the cancel
         });
     },
-    onNewSkill(skillSet) {
-      this.dialog = {
-        visible: true,
-        mode: SkillEditMode.Skill_New,
-        skillSet: skillSet,
-        skill: {}
-      };
-    },
     newSkillSet() {
       if (!this.checkInputEmpty()) {
         return;
       }
-      if (!this.checkInputDuplicated(this.skillsets)) {
+      if (
+        !this.checkInputDuplicated(this.skillsets, this.dialog.skillSet.name)
+      ) {
         return;
       }
       this.$Amplify.API.graphql(
@@ -257,7 +257,9 @@ export default {
       // if (!this.checkInputNoChange()) {
       //   return;
       // }
-      if (!this.checkInputDuplicated(this.skillsets)) {
+      if (
+        !this.checkInputDuplicated(this.skillsets, this.dialog.skillSet.name)
+      ) {
         return;
       }
       this.$Amplify.API.graphql(
@@ -299,9 +301,14 @@ export default {
       if (!this.checkInputEmpty()) {
         return;
       }
-      //   if (!this.checkInputDuplicated(this.dialog.skillset.skills)) {
-      //     return;
-      //   }
+      if (
+        !this.checkInputDuplicated(
+          this.dialog.skillSet.skills,
+          this.dialog.skill.name
+        )
+      ) {
+        return;
+      }
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(createSkill, {
           input: {
@@ -329,9 +336,14 @@ export default {
       //   return;
       // }
       // tbd
-      // if (!this.checkInputDuplicated(this.skillsets)) {
-      //   return;
-      // }
+      if (
+        !this.checkInputDuplicated(
+          this.dialog.skillSet.skills,
+          this.dialog.skill.name
+        )
+      ) {
+        return;
+      }
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(updateSkill, {
           input: {
@@ -382,12 +394,9 @@ export default {
         return true;
       }
     },
-    // checkInputNoChange(oldValue) {
-    //   return oldValue !== this.dialog.input;
-    // },
-    checkInputDuplicated(existingItems) {
+    checkInputDuplicated(existingItems, inputValue) {
       const findIndex = existingItems.findIndex(item => {
-        return item === this.dialog.input;
+        return item.name === inputValue;
       });
       if (findIndex >= 0) {
         this.$message("名称已存在，请重新输入。");
