@@ -1,22 +1,35 @@
 <template>
   <div class="home">
-    <admin :id="loginUser"/>
+    <component :is="loginRoleComponent" :id="loginUser.email"></component>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Admin from '@/components/Admin.vue';
-
 export default {
   name: 'home',
+  components: {
+    About: () => import('@/views/About.vue'),
+    Admin: () => import('@/components/Admin.vue'),
+    Principal: () => import('@/components/Principal.vue'),
+    Mentor: () => import('@/components/Mentor.vue'),
+    Teacher: () => import('@/components/Mentor.vue')
+  },
   computed: {
     loginUser() {
-      return this.$store.state.user.attributes.email;
+      if (this.$store.state.user) {
+        return this.$store.state.user;
+      } else {
+        return {};
+      }
+    },
+    loginRoleComponent() {
+      const loginUser = this.loginUser;
+      if (loginUser.role) {
+        return loginUser.role;
+      } else {
+        return 'about';
+      }
     }
-  },
-  components: {
-    Admin
   }
 }
 </script>

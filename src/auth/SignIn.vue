@@ -23,14 +23,17 @@
 </template>
 
 <script>
+import { fetchUserInfo } from "../utils/UserUtil";
+
 export default {
   name: 'sign-in',
   methods: {
     async signIn() {
       try {
-        const user = await this.$Amplify.Auth.signIn(this.form.username, this.form.password)
+        const authUser = await this.$Amplify.Auth.signIn(this.form.username, this.form.password)
+        const userInfo = await fetchUserInfo(this.$Amplify, authUser.attributes.email);
         this.$store.dispatch('setIsAuthenticated', true)
-        this.$store.dispatch('setUser', user)
+        this.$store.dispatch('setUser', userInfo)
         this.$router.push({
           name: 'home'
         });
@@ -43,7 +46,7 @@ export default {
   return {
     form: {
       username: '',
-      password: '',
+      password: ''
     }
   }
 }

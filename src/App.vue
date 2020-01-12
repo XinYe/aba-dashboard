@@ -15,12 +15,15 @@
 </template>
 
 <script>
+import { fetchUserInfo } from "./utils/UserUtil";
+
 export default {
   async beforeCreate() {
     try {
-      const user = await this.$Amplify.Auth.currentAuthenticatedUser()
+      const authUser = await this.$Amplify.Auth.currentAuthenticatedUser()
+      const userInfo = await fetchUserInfo(this.$Amplify, authUser.attributes.email);
       this.$store.dispatch('setIsAuthenticated', true)
-      this.$store.dispatch('setUser', user)
+      this.$store.dispatch('setUser', userInfo)
     } catch (err) {
       console.log('error: ', err)
       this.$router.push('/')
