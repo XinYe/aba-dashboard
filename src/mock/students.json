@@ -6,9 +6,9 @@
             "gender": "男",
             "age": "6",
             "diagnosis": "125",
-            "skills": [
+            "records": [
                 {
-                    "name": "打招呼",
+                    "skill": "打招呼",
                     "activities": [
                         {
                             "datetime": "2019-1-1",
@@ -44,9 +44,9 @@
             "gender": "男",
             "age": "8",
             "diagnosis": "120",
-            "skills": [
+            "records": [
                 {
-                    "name": "打招呼",
+                    "skill": "打招呼",
                     "activities": [
                         {
                             "datetime": "2019-1-1",
@@ -59,7 +59,7 @@
                     ]
                 },
                 {
-                    "name": "坐地铁",
+                    "skill": "坐地铁",
                     "activities": [
                         {
                             "datetime": "2019-1-1",

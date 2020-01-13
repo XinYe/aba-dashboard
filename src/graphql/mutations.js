@@ -448,12 +448,9 @@ export const createStudent = `mutation CreateStudent(
         nextToken
       }
     }
-    activities {
+    records {
       items {
         id
-        skill
-        datetime
-        rate
       }
       nextToken
     }
@@ -478,12 +475,9 @@ export const updateStudent = `mutation UpdateStudent(
         nextToken
       }
     }
-    activities {
+    records {
       items {
         id
-        skill
-        datetime
-        rate
       }
       nextToken
     }
@@ -508,10 +502,115 @@ export const deleteStudent = `mutation DeleteStudent(
         nextToken
       }
     }
+    records {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const createRecord = `mutation CreateRecord(
+  $input: CreateRecordInput!
+  $condition: ModelRecordConditionInput
+) {
+  createRecord(input: $input, condition: $condition) {
+    id
+    skill {
+      id
+      name
+      skillset {
+        id
+        name
+      }
+    }
+    student {
+      id
+      name
+      teacher {
+        id
+        email
+      }
+      records {
+        nextToken
+      }
+    }
     activities {
       items {
         id
-        skill
+        datetime
+        rate
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updateRecord = `mutation UpdateRecord(
+  $input: UpdateRecordInput!
+  $condition: ModelRecordConditionInput
+) {
+  updateRecord(input: $input, condition: $condition) {
+    id
+    skill {
+      id
+      name
+      skillset {
+        id
+        name
+      }
+    }
+    student {
+      id
+      name
+      teacher {
+        id
+        email
+      }
+      records {
+        nextToken
+      }
+    }
+    activities {
+      items {
+        id
+        datetime
+        rate
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deleteRecord = `mutation DeleteRecord(
+  $input: DeleteRecordInput!
+  $condition: ModelRecordConditionInput
+) {
+  deleteRecord(input: $input, condition: $condition) {
+    id
+    skill {
+      id
+      name
+      skillset {
+        id
+        name
+      }
+    }
+    student {
+      id
+      name
+      teacher {
+        id
+        email
+      }
+      records {
+        nextToken
+      }
+    }
+    activities {
+      items {
+        id
         datetime
         rate
       }
@@ -526,15 +625,17 @@ export const createActivity = `mutation CreateActivity(
 ) {
   createActivity(input: $input, condition: $condition) {
     id
-    skill
     datetime
     rate
-    student {
+    record {
       id
-      name
-      teacher {
+      skill {
         id
-        email
+        name
+      }
+      student {
+        id
+        name
       }
       activities {
         nextToken
@@ -549,15 +650,17 @@ export const updateActivity = `mutation UpdateActivity(
 ) {
   updateActivity(input: $input, condition: $condition) {
     id
-    skill
     datetime
     rate
-    student {
+    record {
       id
-      name
-      teacher {
+      skill {
         id
-        email
+        name
+      }
+      student {
+        id
+        name
       }
       activities {
         nextToken
@@ -572,15 +675,17 @@ export const deleteActivity = `mutation DeleteActivity(
 ) {
   deleteActivity(input: $input, condition: $condition) {
     id
-    skill
     datetime
     rate
-    student {
+    record {
       id
-      name
-      teacher {
+      skill {
         id
-        email
+        name
+      }
+      student {
+        id
+        name
       }
       activities {
         nextToken

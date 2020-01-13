@@ -14,19 +14,16 @@
       <i class="el-icon-basketball">技能列表</i>
     </div>
 
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName" editable @edit="onSkillConfig">
       <el-tab-pane
-        v-for="(skill, index) in skills"
-        :label="skill.name"
+        v-for="(record, index) in records"
+        :label="record.skill"
         :name="index.toString()"
         :key="index"
       >
-        <skill :name="skill.name" />
+        <skill :name="record.skill" />
       </el-tab-pane>
     </el-tabs>
-    <!-- <el-button type="primary" icon="el-icon-data-analysis"
-      v-on:click="OnButtonClick"
-    >Chart</el-button>-->
   </div>
 </template>
 
@@ -55,36 +52,18 @@ export default Vue.extend({
     student() {
       return this.$data.appContext.curStudent;
     },
-    skills() {
-        return this.student.skills;
+    records() {
+        return this.student.records;
     }
   },
   methods: {
-    OnButtonClick() {
-      this.$router.push({
-        name: "chart",
-        params: {
-          columns: this.getChartColumns(),
-          datasets: this.getChartDatasets()
-        }
-      });
-    },
-    getChartColumns() {
-      return JSON.stringify(["January4", "February", "March", "April"]);
-    },
-    getChartDatasets() {
-      return JSON.stringify([
-        {
-          label: "Data One",
-          borderColor: "lightgreen",
-          data: [40, null, 50, 60]
-        },
-        {
-          label: "Data two",
-          borderColor: "lightblue",
-          data: [30, 10, 60, 50]
-        }
-      ]);
+    onSkillConfig(targetName, action) {
+      if (action === 'add') {
+        // show the dialog
+        console.log(targetName);
+      } else if (action === 'remove') {
+        console.log(targetName);
+      }
     }
   }
 });

@@ -65,12 +65,12 @@ export default Vue.extend({
     },
     getActivities() {
       const skillName = this.name;
-      const skills = this.student().skills;
-      const curSkill = skills.find(skill => {
-        return skill.name === skillName;
+      const records = this.student().records;
+      const curRecord = records.find(record => {
+        return record.skill === skillName;
       });
-      if (curSkill) {
-        return curSkill.activities;
+      if (curRecord) {
+        return curRecord.activities;
       } else {
         return [];
       }
@@ -119,8 +119,8 @@ export default Vue.extend({
         const month = pickedDate.getMonth() + 1;
         const day = pickedDate.getDate();
         
-        const skillActivities = this.getActivities();
-        skillActivities.push({
+        const activities = this.getActivities();
+        activities.push({
           datetime: `${year}-${month}-${day}`,
           rate: this.form.rate
         });

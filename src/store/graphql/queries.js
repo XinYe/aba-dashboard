@@ -273,12 +273,9 @@ export const getStudent = `query GetStudent($id: ID!) {
         nextToken
       }
     }
-    activities {
+    records {
       items {
         id
-        skill
-        datetime
-        rate
       }
       nextToken
     }
@@ -298,6 +295,63 @@ export const listStudents = `query ListStudents(
         id
         email
       }
+      records {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getRecord = `query GetRecord($id: ID!) {
+  getRecord(id: $id) {
+    id
+    skill {
+      id
+      name
+      skillset {
+        id
+        name
+      }
+    }
+    student {
+      id
+      name
+      teacher {
+        id
+        email
+      }
+      records {
+        nextToken
+      }
+    }
+    activities {
+      items {
+        id
+        datetime
+        rate
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const listRecords = `query ListRecords(
+  $filter: ModelRecordFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listRecords(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      skill {
+        id
+        name
+      }
+      student {
+        id
+        name
+      }
       activities {
         nextToken
       }
@@ -309,15 +363,17 @@ export const listStudents = `query ListStudents(
 export const getActivity = `query GetActivity($id: ID!) {
   getActivity(id: $id) {
     id
-    skill
     datetime
     rate
-    student {
+    record {
       id
-      name
-      teacher {
+      skill {
         id
-        email
+        name
+      }
+      student {
+        id
+        name
       }
       activities {
         nextToken
@@ -334,12 +390,10 @@ export const listActivitys = `query ListActivitys(
   listActivitys(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      skill
       datetime
       rate
-      student {
+      record {
         id
-        name
       }
     }
     nextToken

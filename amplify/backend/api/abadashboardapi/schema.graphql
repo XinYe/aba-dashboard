@@ -43,12 +43,17 @@ type Student @model {
   id: ID!
   name: String!
   teacher: Teacher @connection(name: "TeacherStudents")
-  activities: [Activity] @connection(name: "StudentActivities")
+  records: [Record] @connection(name: "StudentRecords")
+}
+type Record @model {
+  id: ID!
+  skill: Skill!
+  student: Student @connection(name: "StudentRecords")
+  activities: [Activity] @connection(name: "RecordActivities")
 }
 type Activity @model {
   id: ID!
-  skill: ID!
   datetime: String!
   rate: String!
-  student: Student @connection(name: "StudentActivities")
+  record: Record @connection(name: "RecordActivities")
 }

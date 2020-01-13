@@ -382,12 +382,9 @@ export const onCreateStudent = `subscription OnCreateStudent {
         nextToken
       }
     }
-    activities {
+    records {
       items {
         id
-        skill
-        datetime
-        rate
       }
       nextToken
     }
@@ -409,12 +406,9 @@ export const onUpdateStudent = `subscription OnUpdateStudent {
         nextToken
       }
     }
-    activities {
+    records {
       items {
         id
-        skill
-        datetime
-        rate
       }
       nextToken
     }
@@ -436,10 +430,106 @@ export const onDeleteStudent = `subscription OnDeleteStudent {
         nextToken
       }
     }
+    records {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onCreateRecord = `subscription OnCreateRecord {
+  onCreateRecord {
+    id
+    skill {
+      id
+      name
+      skillset {
+        id
+        name
+      }
+    }
+    student {
+      id
+      name
+      teacher {
+        id
+        email
+      }
+      records {
+        nextToken
+      }
+    }
     activities {
       items {
         id
-        skill
+        datetime
+        rate
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onUpdateRecord = `subscription OnUpdateRecord {
+  onUpdateRecord {
+    id
+    skill {
+      id
+      name
+      skillset {
+        id
+        name
+      }
+    }
+    student {
+      id
+      name
+      teacher {
+        id
+        email
+      }
+      records {
+        nextToken
+      }
+    }
+    activities {
+      items {
+        id
+        datetime
+        rate
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onDeleteRecord = `subscription OnDeleteRecord {
+  onDeleteRecord {
+    id
+    skill {
+      id
+      name
+      skillset {
+        id
+        name
+      }
+    }
+    student {
+      id
+      name
+      teacher {
+        id
+        email
+      }
+      records {
+        nextToken
+      }
+    }
+    activities {
+      items {
+        id
         datetime
         rate
       }
@@ -451,15 +541,17 @@ export const onDeleteStudent = `subscription OnDeleteStudent {
 export const onCreateActivity = `subscription OnCreateActivity {
   onCreateActivity {
     id
-    skill
     datetime
     rate
-    student {
+    record {
       id
-      name
-      teacher {
+      skill {
         id
-        email
+        name
+      }
+      student {
+        id
+        name
       }
       activities {
         nextToken
@@ -471,15 +563,17 @@ export const onCreateActivity = `subscription OnCreateActivity {
 export const onUpdateActivity = `subscription OnUpdateActivity {
   onUpdateActivity {
     id
-    skill
     datetime
     rate
-    student {
+    record {
       id
-      name
-      teacher {
+      skill {
         id
-        email
+        name
+      }
+      student {
+        id
+        name
       }
       activities {
         nextToken
@@ -491,15 +585,17 @@ export const onUpdateActivity = `subscription OnUpdateActivity {
 export const onDeleteActivity = `subscription OnDeleteActivity {
   onDeleteActivity {
     id
-    skill
     datetime
     rate
-    student {
+    record {
       id
-      name
-      teacher {
+      skill {
         id
-        email
+        name
+      }
+      student {
+        id
+        name
       }
       activities {
         nextToken
