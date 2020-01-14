@@ -8,7 +8,7 @@
             "diagnosis": "125",
             "records": [
                 {
-                    "skill": "打招呼",
+                    "skill": "搭积木",
                     "activities": [
                         {
                             "datetime": "2019-1-1",
@@ -35,31 +35,9 @@
                             "rate": 80
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "name": "钱同学",
-            "teacher": "zhao@teacher.com",
-            "gender": "男",
-            "age": "8",
-            "diagnosis": "120",
-            "records": [
-                {
-                    "skill": "打招呼",
-                    "activities": [
-                        {
-                            "datetime": "2019-1-1",
-                            "rate": 50
-                        },
-                        {
-                            "datetime": "2019-3-1",
-                            "rate": 90
-                        }
-                    ]
                 },
                 {
-                    "skill": "坐地铁",
+                    "skill": "玩玩具（开放型）",
                     "activities": [
                         {
                             "datetime": "2019-1-1",
@@ -72,6 +50,28 @@
                         {
                             "datetime": "2019-4-1",
                             "rate": 50
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "钱同学",
+            "teacher": "zhao@teacher.com",
+            "gender": "男",
+            "age": "8",
+            "diagnosis": "120",
+            "records": [
+                {
+                    "skill": "搭积木",
+                    "activities": [
+                        {
+                            "datetime": "2019-1-1",
+                            "rate": 50
+                        },
+                        {
+                            "datetime": "2019-3-1",
+                            "rate": 90
                         }
                     ]
                 }
