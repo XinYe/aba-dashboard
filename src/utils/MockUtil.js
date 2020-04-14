@@ -3,10 +3,6 @@ import Mentors from '../mock/mentors.json';
 import Teachers from '../mock/teachers.json';
 import Students from '../mock/students.json';
 
-export function getAdmin() {
-    return {};
-}
-
 export function getPrincipals() {
     return Principals.items;
 }

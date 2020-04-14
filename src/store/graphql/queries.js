@@ -97,10 +97,14 @@ export const getAdmin = `query GetAdmin($id: ID!) {
   getAdmin(id: $id) {
     id
     email
+    name
+    note
     members {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -116,6 +120,8 @@ export const listAdmins = `query ListAdmins(
     items {
       id
       email
+      name
+      note
       members {
         nextToken
       }
@@ -128,9 +134,13 @@ export const getPrincipal = `query GetPrincipal($id: ID!) {
   getPrincipal(id: $id) {
     id
     email
+    name
+    note
     admin {
       id
       email
+      name
+      note
       members {
         nextToken
       }
@@ -139,6 +149,8 @@ export const getPrincipal = `query GetPrincipal($id: ID!) {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -154,9 +166,13 @@ export const listPrincipals = `query ListPrincipals(
     items {
       id
       email
+      name
+      note
       admin {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -170,12 +186,18 @@ export const getMentor = `query GetMentor($id: ID!) {
   getMentor(id: $id) {
     id
     email
+    name
+    note
     principal {
       id
       email
+      name
+      note
       admin {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -185,6 +207,8 @@ export const getMentor = `query GetMentor($id: ID!) {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -200,9 +224,13 @@ export const listMentors = `query ListMentors(
     items {
       id
       email
+      name
+      note
       principal {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -216,12 +244,18 @@ export const getTeacher = `query GetTeacher($id: ID!) {
   getTeacher(id: $id) {
     id
     email
+    name
+    note
     mentor {
       id
       email
+      name
+      note
       principal {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -231,6 +265,7 @@ export const getTeacher = `query GetTeacher($id: ID!) {
       items {
         id
         name
+        note
       }
       nextToken
     }
@@ -246,9 +281,13 @@ export const listTeachers = `query ListTeachers(
     items {
       id
       email
+      name
+      note
       mentor {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -262,12 +301,17 @@ export const getStudent = `query GetStudent($id: ID!) {
   getStudent(id: $id) {
     id
     name
+    note
     teacher {
       id
       email
+      name
+      note
       mentor {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -276,6 +320,8 @@ export const getStudent = `query GetStudent($id: ID!) {
     records {
       items {
         id
+        skillId
+        note
       }
       nextToken
     }
@@ -291,9 +337,12 @@ export const listStudents = `query ListStudents(
     items {
       id
       name
+      note
       teacher {
         id
         email
+        name
+        note
       }
       records {
         nextToken
@@ -306,32 +355,21 @@ export const listStudents = `query ListStudents(
 export const getRecord = `query GetRecord($id: ID!) {
   getRecord(id: $id) {
     id
-    skill {
-      id
-      name
-      skillset {
-        id
-        name
-      }
-    }
+    skillId
+    note
     student {
       id
       name
+      note
       teacher {
         id
         email
+        name
+        note
       }
       records {
         nextToken
       }
-    }
-    activities {
-      items {
-        id
-        datetime
-        rate
-      }
-      nextToken
     }
   }
 }
@@ -344,16 +382,12 @@ export const listRecords = `query ListRecords(
   listRecords(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      skill {
-        id
-        name
-      }
+      skillId
+      note
       student {
         id
         name
-      }
-      activities {
-        nextToken
+        note
       }
     }
     nextToken
@@ -363,22 +397,10 @@ export const listRecords = `query ListRecords(
 export const getActivity = `query GetActivity($id: ID!) {
   getActivity(id: $id) {
     id
+    recordId
     datetime
     rate
-    record {
-      id
-      skill {
-        id
-        name
-      }
-      student {
-        id
-        name
-      }
-      activities {
-        nextToken
-      }
-    }
+    note
   }
 }
 `;
@@ -390,11 +412,10 @@ export const listActivitys = `query ListActivitys(
   listActivitys(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      recordId
       datetime
       rate
-      record {
-        id
-      }
+      note
     }
     nextToken
   }
@@ -441,9 +462,158 @@ export const getAdminByEmail = `query GetAdminByEmail(
     items {
       id
       email
+      name
+      note
       members {
+        items {
+          id
+          email
+          name
+          note
+        }
         nextToken
       }
+    }
+    nextToken
+  }
+}
+`;
+export const getPrincipalByEmail = `query GetPrincipalByEmail(
+  $email: String
+  $sortDirection: ModelSortDirection
+  $filter: ModelPrincipalFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  getPrincipalByEmail(
+    email: $email
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      email
+      name
+      note
+      admin {
+        id
+        email
+        name
+        note
+      }
+      members {
+        items {
+          id
+          email
+          name
+          note
+        }
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getMentorByEmail = `query GetMentorByEmail(
+  $email: String
+  $sortDirection: ModelSortDirection
+  $filter: ModelMentorFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  getMentorByEmail(
+    email: $email
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      email
+      name
+      note
+      principal {
+        id
+        email
+        name
+        note
+      }
+      members {
+        items {
+          id
+          email
+          name
+          note
+        }
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getTeacherByEmail = `query GetTeacherByEmail(
+  $email: String
+  $sortDirection: ModelSortDirection
+  $filter: ModelTeacherFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  getTeacherByEmail(
+    email: $email
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      email
+      name
+      note
+      mentor {
+        id
+        email
+        name
+        note
+      }
+      members {
+        items {
+          id
+          name
+          note
+        }
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getActivitiesByRecordId = `query GetActivitiesByRecordId(
+  $recordId: String
+  $sortDirection: ModelSortDirection
+  $filter: ModelActivityFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  getActivitiesByRecordId(
+    recordId: $recordId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      recordId
+      datetime
+      rate
+      note
     }
     nextToken
   }

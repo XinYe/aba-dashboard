@@ -1,116 +1,163 @@
 <template>
-  <div class="page-body">
+  <div class="student-user">
     <div class="nav-header">
       <i class="el-icon-user"></i>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/principal' }">{{principal.name}}</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/mentor' }">{{mentor.name}}</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/teacher' }">{{teacher.name}}</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/student' }">{{student.name}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <h1 />
     <div>
       <i class="el-icon-basketball">技能列表</i>
+      <el-button type="primary" icon="el-icon-setting" style="float: right" @click="skillDialogVisible = true">技能管理</el-button>
     </div>
 
-    <el-tabs v-model="activeSkillTab" editable @edit="onSkillConfig">
+    <el-tabs closable @edit="onSkillConfig">
       <el-tab-pane
-        v-for="(record, index) in records"
-        :label="record.skill"
+        v-for="(record, index) in student.records"
+        :label="record.skillName"
         :name="index.toString()"
         :key="index"
       >
-        <skill :name="record.skill" />
+        <skill :record="record" :student="student"/>
       </el-tab-pane>
     </el-tabs>
 
     <el-dialog title="选择技能" :visible.sync="skillDialogVisible">
-      <el-tree :data="skillSets" :props="props" node-key="id" :default-checked-keys="recordedSkills" show-checkbox @check-change="onSkillCheckChange"></el-tree>
+      <el-tree
+        v-loading="isProcessing"
+        :data="skillSets"
+        :props="props"
+        node-key="id"
+        default-expand-all
+        :default-checked-keys="recordedSkills"
+        show-checkbox
+        @check-change="onSkillCheckChange"
+      ></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="skillDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="onChooseSkillsConfirm">确定</el-button>
+        <el-button type="primary" @click="onSkillConfigConfirm">确定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { listSkillSets, getSkillSet } from "../store/graphql/queries";
+import {
+  getStudentProxy,
+  createRecordProxy,
+  deleteRecordProxy
+} from "../utils/StudentUtil";
+import { listSkillSets } from "../store/graphql/queries";
 
 import Vue from "vue";
 
 export default Vue.extend({
+  props: {
+    id: String
+  },
   components: {
     Skill: () => import("./Skill.vue")
   },
-  data() {
-    return {
-      skillDialogVisible: false,
-      activeSkillTab: "0",
-      skillSets: [],
-      props: {
-        label: "name",
-        children: "skills"
-      },
-      recordedSkills: []
-    };
-  },
-  created() {
-    this.fetchSkillSets();
-  },
-  computed: {
-    principal() {
-      return this.$data.appContext.curPrincipal;
-    },
-    mentor() {
-      return this.$data.appContext.curMentor;
-    },
-    teacher() {
-      return this.$data.appContext.curTeacher;
-    },
-    student() {
-      return this.$data.appContext.curStudent;
-    },
-    records() {
-      return this.student.records;
+  async created() {
+    if (this.id) {
+      await this.fetchSkillSets();
+      await this.fetchStudent();
+    } else {
+      console.error("Not allowed to show student page without id");
     }
   },
-  methods: {
-    onSkillConfig(targetName, action) {
-      if (action === "add") {
-        this.skillDialogVisible = true;
-      } else if (action === "remove") {
-        this.$confirm("确认删除?", "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            this.student.records = this.student.records.filter(
-              record => record.skill !== this.student.records[targetName].skill
-            );
-          })
-          .catch(() => {
-            // do nothing for the cancel
-          });
-      }
-    },
-    onSkillCheckChange(node, nodeSelected /*, subtreeSelected*/) {
-      node.selected = nodeSelected;
-    },
-    onChooseSkillsConfirm() {
-      this.skillDialogVisible = false;
+  data() {
+    return {
+      student: {
+        records: []
+      },
+      skillSets: [],
+      addedSkills: [],
+      skillDialogVisible: false,
+      activeSkillTab: "0",
+      props: {
+        label: "name",
+        children: "skills",
+        disabled: "disabled"
+      },
+      isProcessing: false
+    };
+  },
+  computed: {
+    recordedSkills() {
+      const recordedSkills = [];
       this.skillSets.forEach(skillSet => {
-        skillSet.skills.forEach(skill => {
-          if (skill.selected) {
-            this.student.records.push({
-              skill: skill.name,
-              activities: []
-            });
+        const skills = skillSet.skills;
+        skills.forEach(skill => {
+          if (this.isRecordedSkill(skill.id)) {
+            skill.disabled = true;
+            recordedSkills.push(skill.id);
           }
         });
       });
+      return recordedSkills;
+    }
+  },
+  methods: {
+    async onSkillConfig(targetName, action) {
+      if (action === "remove") {
+        try {
+          await this.$confirm("确认删除?", "警告", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          });
+          try {
+            await deleteRecordProxy(
+              this.$Amplify,
+              this.student.records[targetName].id
+            );
+            this.fetchStudent();
+            // tbd: also need remove all actitivies from this record
+          } catch (error) {
+            console.error(error);
+          }
+        } catch (error) {
+          // do nothing for cancel
+        }
+      }
+    },
+    onSkillCheckChange(node, nodeSelected /*, subtreeSelected*/) {
+      // console.log(subtreeSelected);
+      if (node.skillSet) {
+        node.selected = nodeSelected;
+        try {
+          if (nodeSelected) {
+            this.addedSkills.push(node);
+          } else {
+            const removedIndex = this.addedSkills.findIndex(addedSkill => {
+              return addedSkill.id === node.id;
+            });
+            if (removedIndex >= 0) {
+              this.addedSkills.splice(removedIndex, 1);
+            }
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      } // else, no need to handle the SkillSet node
+    },
+    async onSkillConfigConfirm() {
+      this.isProcessing = true;
+      for (let i=0; i<this.addedSkills.length; i++) {
+        const addedSkill = this.addedSkills[i];
+        await createRecordProxy(
+          this.$Amplify,
+          this.student.id,
+          addedSkill.id,
+          "ui"
+        );
+      }
+      this.isProcessing = false;
+      this.addedSkills = [];
+      this.skillDialogVisible = false;
+      await this.fetchStudent();
     },
     fetchSkillSets() {
       this.$Amplify.API.graphql(
@@ -118,49 +165,66 @@ export default Vue.extend({
       )
         .then(res => {
           const skillSets = [];
-          const recordedSkills = [];
           res.data.listSkillSets.items.forEach(skillSet => {
             const skills = skillSet.skills.items;
             skills.forEach(skill => {
               skill.skillSet = skillSet;
-              if (this.isRecordedSkill(skill.name)) {
-                recordedSkills.push(skill.id);
-              }
             });
             skillSet.skills = skills;
             skillSets.push(skillSet);
           });
           this.skillSets = skillSets;
-          this.recordedSkills = recordedSkills;
           console.info(`SkillSets successfully listed`, this.skillSets);
         })
         .catch(e => {
           console.error(`Error listing SkillSets`, e);
         });
     },
-    fetchSkillSet(skillSet, resolve) {
-      this.$Amplify.API.graphql(
-        this.$Amplify.graphqlOperation(getSkillSet, {
-          id: skillSet.id
-        })
-      )
-        .then(res => {
-          const skills = res.data.getSkillSet.skills.items;
-          skills.forEach(skill => {
-            skill.skillSet = skillSet;
-          });
-          resolve(skills);
-          console.info(`SkillSet successfully fetched`, res);
-        })
-        .catch(e => {
-          console.error(`Error fetching SkillSet`, e);
-        });
-    },
-    isRecordedSkill(skillName) {
-      return !!this.records.find(record => {
-        return record.skill === skillName;
+    async fetchStudent() {
+      const student = await getStudentProxy(this.$Amplify, this.id);
+      let records = [];
+      if (student && student.records) {
+        records = student.records.items;
+      }
+      records.forEach(record => {
+        // it's a workaround to append skill name,
+        // as the local mock api has unknow issue to work with the record object with skill connection
+        // so use skillId as the connection reference instead
+        record.skillName = this.getSkillName(record.skillId);
       });
+      this.student = {
+        id: student.id,
+        name: student.name,
+        note: student.note,
+        teacher: student.teacher,
+        records: records
+      };
+    },
+    isRecordedSkill(skillId) {
+      return !!this.student.records.find(record => {
+        return record.skillId === skillId;
+      });
+    },
+    getSkillName(skillId) {
+      for (let i=0; i<this.skillSets.length; i++) {
+        const skills = this.skillSets[i].skills;
+        for (let j=0; j<skills.length; j++) {
+          const skill = skills[j];
+          if (skill.id === skillId) {
+            return skill.name;
+          }
+        }
+      }
     }
   }
 });
 </script>
+
+<style scoped>
+.student-user {
+  margin: 20px;
+}
+.nav-header {
+  display: flex;
+}
+</style>

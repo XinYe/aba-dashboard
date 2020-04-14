@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { fetchUserInfo } from "../utils/UserUtil";
+import { getUserByEmailProxy } from "../utils/UserUtil";
 
 export default {
   name: 'sign-in',
@@ -31,7 +31,7 @@ export default {
     async signIn() {
       try {
         const authUser = await this.$Amplify.Auth.signIn(this.form.username, this.form.password)
-        const userInfo = await fetchUserInfo(this.$Amplify, authUser.attributes.email);
+        const userInfo = await getUserByEmailProxy(this.$Amplify, authUser.attributes.email);
         this.$store.dispatch('setIsAuthenticated', true)
         this.$store.dispatch('setUser', userInfo)
         this.$router.push({

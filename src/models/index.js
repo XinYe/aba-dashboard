@@ -4,21 +4,17 @@ import { schema } from './schema';
 
 
 
-const { Blog, Post, Comment, SkillSet, Skill, User, Admin, Principal, Mentor, Teacher, Student, Activity, Employee, Warehouse } = initSchema(schema);
+const { SkillSet, Skill, Record, Student, Teacher, Mentor, Principal, Admin, Activity, User } = initSchema(schema);
 
 export {
-  Blog,
-  Post,
-  Comment,
   SkillSet,
   Skill,
-  User,
-  Admin,
-  Principal,
-  Mentor,
-  Teacher,
+  Record,
   Student,
+  Teacher,
+  Mentor,
+  Principal,
+  Admin,
   Activity,
-  Employee,
-  Warehouse
+  User
 };

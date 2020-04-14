@@ -4,7 +4,6 @@ import Welcome from '../views/Welcome.vue';
 import Home from '../views/Home.vue';
 import Auth from '../auth/Auth.vue';
 
-const getAdmin = require('@/utils/MockUtil').getAdmin;
 const getPrincipals = require('@/utils/MockUtil').getPrincipals;
 const getMentors = require('@/utils/MockUtil').getMentors;
 const getTeachers = require('@/utils/MockUtil').getTeachers;
@@ -34,35 +33,35 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/admin',
+    path: '/admin/:id',
     name: 'admin',
     component: () => import('@/components/Admin.vue'),
     meta: { requiresAuth: true },
     props: true
   },
   {
-    path: '/principal',
+    path: '/principal/:id',
     name: 'principal',
     component: () => import('@/components/Principal.vue'),
     meta: { requiresAuth: true },
     props: true
   },
   {
-    path: '/mentor',
+    path: '/mentor/:id',
     name: 'mentor',
     component: () => import('@/components/Mentor.vue'),
     meta: { requiresAuth: true },
     props: true
   },
   {
-    path: '/teacher',
+    path: '/teacher/:id',
     name: 'teacher',
     component: () => import('@/components/Teacher.vue'),
     meta: { requiresAuth: true },
     props: true
   },
   {
-    path: '/student',
+    path: '/student/:id',
     name: 'student',
     component: () => import('@/components/Student.vue'),
     meta: { requiresAuth: true },
@@ -91,14 +90,12 @@ const router = new VueRouter({
   routes,
 });
 
-let admin = getAdmin();
 let principals = getPrincipals();
 let mentors = getMentors();
 let teachers = getTeachers();
 let students = getStudents();
 
 let appContext = {
-  admin: admin,
   principals: principals,
   mentors: mentors,
   teachers: teachers,

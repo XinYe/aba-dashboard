@@ -116,10 +116,14 @@ export const onCreateAdmin = `subscription OnCreateAdmin {
   onCreateAdmin {
     id
     email
+    name
+    note
     members {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -130,10 +134,14 @@ export const onUpdateAdmin = `subscription OnUpdateAdmin {
   onUpdateAdmin {
     id
     email
+    name
+    note
     members {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -144,10 +152,14 @@ export const onDeleteAdmin = `subscription OnDeleteAdmin {
   onDeleteAdmin {
     id
     email
+    name
+    note
     members {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -158,9 +170,13 @@ export const onCreatePrincipal = `subscription OnCreatePrincipal {
   onCreatePrincipal {
     id
     email
+    name
+    note
     admin {
       id
       email
+      name
+      note
       members {
         nextToken
       }
@@ -169,6 +185,8 @@ export const onCreatePrincipal = `subscription OnCreatePrincipal {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -179,9 +197,13 @@ export const onUpdatePrincipal = `subscription OnUpdatePrincipal {
   onUpdatePrincipal {
     id
     email
+    name
+    note
     admin {
       id
       email
+      name
+      note
       members {
         nextToken
       }
@@ -190,6 +212,8 @@ export const onUpdatePrincipal = `subscription OnUpdatePrincipal {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -200,9 +224,13 @@ export const onDeletePrincipal = `subscription OnDeletePrincipal {
   onDeletePrincipal {
     id
     email
+    name
+    note
     admin {
       id
       email
+      name
+      note
       members {
         nextToken
       }
@@ -211,6 +239,8 @@ export const onDeletePrincipal = `subscription OnDeletePrincipal {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -221,12 +251,18 @@ export const onCreateMentor = `subscription OnCreateMentor {
   onCreateMentor {
     id
     email
+    name
+    note
     principal {
       id
       email
+      name
+      note
       admin {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -236,6 +272,8 @@ export const onCreateMentor = `subscription OnCreateMentor {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -246,12 +284,18 @@ export const onUpdateMentor = `subscription OnUpdateMentor {
   onUpdateMentor {
     id
     email
+    name
+    note
     principal {
       id
       email
+      name
+      note
       admin {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -261,6 +305,8 @@ export const onUpdateMentor = `subscription OnUpdateMentor {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -271,12 +317,18 @@ export const onDeleteMentor = `subscription OnDeleteMentor {
   onDeleteMentor {
     id
     email
+    name
+    note
     principal {
       id
       email
+      name
+      note
       admin {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -286,6 +338,8 @@ export const onDeleteMentor = `subscription OnDeleteMentor {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -296,12 +350,18 @@ export const onCreateTeacher = `subscription OnCreateTeacher {
   onCreateTeacher {
     id
     email
+    name
+    note
     mentor {
       id
       email
+      name
+      note
       principal {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -311,6 +371,7 @@ export const onCreateTeacher = `subscription OnCreateTeacher {
       items {
         id
         name
+        note
       }
       nextToken
     }
@@ -321,12 +382,18 @@ export const onUpdateTeacher = `subscription OnUpdateTeacher {
   onUpdateTeacher {
     id
     email
+    name
+    note
     mentor {
       id
       email
+      name
+      note
       principal {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -336,6 +403,7 @@ export const onUpdateTeacher = `subscription OnUpdateTeacher {
       items {
         id
         name
+        note
       }
       nextToken
     }
@@ -346,12 +414,18 @@ export const onDeleteTeacher = `subscription OnDeleteTeacher {
   onDeleteTeacher {
     id
     email
+    name
+    note
     mentor {
       id
       email
+      name
+      note
       principal {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -361,6 +435,7 @@ export const onDeleteTeacher = `subscription OnDeleteTeacher {
       items {
         id
         name
+        note
       }
       nextToken
     }
@@ -371,12 +446,17 @@ export const onCreateStudent = `subscription OnCreateStudent {
   onCreateStudent {
     id
     name
+    note
     teacher {
       id
       email
+      name
+      note
       mentor {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -385,6 +465,8 @@ export const onCreateStudent = `subscription OnCreateStudent {
     records {
       items {
         id
+        skillId
+        note
       }
       nextToken
     }
@@ -395,12 +477,17 @@ export const onUpdateStudent = `subscription OnUpdateStudent {
   onUpdateStudent {
     id
     name
+    note
     teacher {
       id
       email
+      name
+      note
       mentor {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -409,6 +496,8 @@ export const onUpdateStudent = `subscription OnUpdateStudent {
     records {
       items {
         id
+        skillId
+        note
       }
       nextToken
     }
@@ -419,12 +508,17 @@ export const onDeleteStudent = `subscription OnDeleteStudent {
   onDeleteStudent {
     id
     name
+    note
     teacher {
       id
       email
+      name
+      note
       mentor {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -433,6 +527,8 @@ export const onDeleteStudent = `subscription OnDeleteStudent {
     records {
       items {
         id
+        skillId
+        note
       }
       nextToken
     }
@@ -442,32 +538,21 @@ export const onDeleteStudent = `subscription OnDeleteStudent {
 export const onCreateRecord = `subscription OnCreateRecord {
   onCreateRecord {
     id
-    skill {
-      id
-      name
-      skillset {
-        id
-        name
-      }
-    }
+    skillId
+    note
     student {
       id
       name
+      note
       teacher {
         id
         email
+        name
+        note
       }
       records {
         nextToken
       }
-    }
-    activities {
-      items {
-        id
-        datetime
-        rate
-      }
-      nextToken
     }
   }
 }
@@ -475,32 +560,21 @@ export const onCreateRecord = `subscription OnCreateRecord {
 export const onUpdateRecord = `subscription OnUpdateRecord {
   onUpdateRecord {
     id
-    skill {
-      id
-      name
-      skillset {
-        id
-        name
-      }
-    }
+    skillId
+    note
     student {
       id
       name
+      note
       teacher {
         id
         email
+        name
+        note
       }
       records {
         nextToken
       }
-    }
-    activities {
-      items {
-        id
-        datetime
-        rate
-      }
-      nextToken
     }
   }
 }
@@ -508,32 +582,21 @@ export const onUpdateRecord = `subscription OnUpdateRecord {
 export const onDeleteRecord = `subscription OnDeleteRecord {
   onDeleteRecord {
     id
-    skill {
-      id
-      name
-      skillset {
-        id
-        name
-      }
-    }
+    skillId
+    note
     student {
       id
       name
+      note
       teacher {
         id
         email
+        name
+        note
       }
       records {
         nextToken
       }
-    }
-    activities {
-      items {
-        id
-        datetime
-        rate
-      }
-      nextToken
     }
   }
 }
@@ -541,66 +604,30 @@ export const onDeleteRecord = `subscription OnDeleteRecord {
 export const onCreateActivity = `subscription OnCreateActivity {
   onCreateActivity {
     id
+    recordId
     datetime
     rate
-    record {
-      id
-      skill {
-        id
-        name
-      }
-      student {
-        id
-        name
-      }
-      activities {
-        nextToken
-      }
-    }
+    note
   }
 }
 `;
 export const onUpdateActivity = `subscription OnUpdateActivity {
   onUpdateActivity {
     id
+    recordId
     datetime
     rate
-    record {
-      id
-      skill {
-        id
-        name
-      }
-      student {
-        id
-        name
-      }
-      activities {
-        nextToken
-      }
-    }
+    note
   }
 }
 `;
 export const onDeleteActivity = `subscription OnDeleteActivity {
   onDeleteActivity {
     id
+    recordId
     datetime
     rate
-    record {
-      id
-      skill {
-        id
-        name
-      }
-      student {
-        id
-        name
-      }
-      activities {
-        nextToken
-      }
-    }
+    note
   }
 }
 `;

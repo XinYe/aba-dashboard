@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <component :is="loginRoleComponent" :email="loginUser.email"></component>
+    <component :is="loginRole"></component>
   </div>
 </template>
 
@@ -15,21 +15,13 @@ export default {
     Teacher: () => import('@/components/Mentor.vue')
   },
   computed: {
-    loginUser() {
+    loginRole() {
       if (this.$store.state.user) {
-        return this.$store.state.user;
-      } else {
-        return {};
-      }
-    },
-    loginRoleComponent() {
-      const loginUser = this.loginUser;
-      if (loginUser.role) {
-        return loginUser.role;
+        return this.$store.state.user.role;
       } else {
         return 'about';
       }
     }
   }
-}
+};
 </script>

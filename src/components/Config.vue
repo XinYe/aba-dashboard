@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { listSkillSets, getSkillSet } from "../store/graphql/queries";
+import { listSkillSets } from "../store/graphql/queries";
 import {
   createSkillSet,
   updateSkillSet,
@@ -107,12 +107,12 @@ export default {
     }
   },
   methods: {
-    loadSkills(nodeData, treeNode, resolve) {
-      const curSkillSet = nodeData;
-      if (curSkillSet && curSkillSet.id) {
-        this.fetchSkillSet(curSkillSet, resolve);
-      }
-    },
+    // loadSkills(nodeData, treeNode, resolve) {
+    //   const curSkillSet = nodeData;
+    //   if (curSkillSet && curSkillSet.id) {
+    //     this.fetchSkillSet(curSkillSet, resolve);
+    //   }
+    // },
     fetchSkillSets() {
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(listSkillSets, {})
@@ -122,7 +122,11 @@ export default {
           res.data.listSkillSets.items.forEach(skillSet => {
             const skills = skillSet.skills.items;
             skills.forEach(skill => {
-              skill.skillSet = skillSet;
+              skill.skillSet = {
+                id: skillSet.id,
+                name: skillSet.name,
+                skills: skillSet.skills.items
+              };
             });
             skillsets.push({
               id: skillSet.id,
@@ -138,24 +142,24 @@ export default {
           console.error(`Error listing SkillSets`, e);
         });
     },
-    fetchSkillSet(skillSet, resolve) {
-      this.$Amplify.API.graphql(
-        this.$Amplify.graphqlOperation(getSkillSet, {
-          id: skillSet.id
-        })
-      )
-        .then(res => {
-          const skills = res.data.getSkillSet.skills.items;
-          skills.forEach(skill => {
-            skill.skillSet = skillSet;
-          });
-          resolve(skills);
-          console.info(`SkillSet successfully fetched`, res);
-        })
-        .catch(e => {
-          console.error(`Error fetching SkillSet`, e);
-        });
-    },
+    // fetchSkillSet(skillSet, resolve) {
+    //   this.$Amplify.API.graphql(
+    //     this.$Amplify.graphqlOperation(getSkillSet, {
+    //       id: skillSet.id
+    //     })
+    //   )
+    //     .then(res => {
+    //       const skills = res.data.getSkillSet.skills.items;
+    //       skills.forEach(skill => {
+    //         skill.skillSet = skillSet;
+    //       });
+    //       resolve(skills);
+    //       console.info(`SkillSet successfully fetched`, res);
+    //     })
+    //     .catch(e => {
+    //       console.error(`Error fetching SkillSet`, e);
+    //     });
+    // },
     onOk() {
       switch (this.dialog.mode) {
         case SkillEditMode.SkillSet_New:

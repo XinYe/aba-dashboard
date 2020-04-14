@@ -146,10 +146,14 @@ export const createAdmin = `mutation CreateAdmin(
   createAdmin(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     members {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -163,10 +167,14 @@ export const updateAdmin = `mutation UpdateAdmin(
   updateAdmin(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     members {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -180,10 +188,14 @@ export const deleteAdmin = `mutation DeleteAdmin(
   deleteAdmin(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     members {
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -197,9 +209,13 @@ export const createPrincipal = `mutation CreatePrincipal(
   createPrincipal(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     admin {
       id
       email
+      name
+      note
       members {
         nextToken
       }
@@ -208,6 +224,8 @@ export const createPrincipal = `mutation CreatePrincipal(
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -221,9 +239,13 @@ export const updatePrincipal = `mutation UpdatePrincipal(
   updatePrincipal(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     admin {
       id
       email
+      name
+      note
       members {
         nextToken
       }
@@ -232,6 +254,8 @@ export const updatePrincipal = `mutation UpdatePrincipal(
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -245,9 +269,13 @@ export const deletePrincipal = `mutation DeletePrincipal(
   deletePrincipal(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     admin {
       id
       email
+      name
+      note
       members {
         nextToken
       }
@@ -256,6 +284,8 @@ export const deletePrincipal = `mutation DeletePrincipal(
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -269,12 +299,18 @@ export const createMentor = `mutation CreateMentor(
   createMentor(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     principal {
       id
       email
+      name
+      note
       admin {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -284,6 +320,8 @@ export const createMentor = `mutation CreateMentor(
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -297,12 +335,18 @@ export const updateMentor = `mutation UpdateMentor(
   updateMentor(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     principal {
       id
       email
+      name
+      note
       admin {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -312,6 +356,8 @@ export const updateMentor = `mutation UpdateMentor(
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -325,12 +371,18 @@ export const deleteMentor = `mutation DeleteMentor(
   deleteMentor(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     principal {
       id
       email
+      name
+      note
       admin {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -340,6 +392,8 @@ export const deleteMentor = `mutation DeleteMentor(
       items {
         id
         email
+        name
+        note
       }
       nextToken
     }
@@ -353,12 +407,18 @@ export const createTeacher = `mutation CreateTeacher(
   createTeacher(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     mentor {
       id
       email
+      name
+      note
       principal {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -368,6 +428,7 @@ export const createTeacher = `mutation CreateTeacher(
       items {
         id
         name
+        note
       }
       nextToken
     }
@@ -381,12 +442,18 @@ export const updateTeacher = `mutation UpdateTeacher(
   updateTeacher(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     mentor {
       id
       email
+      name
+      note
       principal {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -396,6 +463,7 @@ export const updateTeacher = `mutation UpdateTeacher(
       items {
         id
         name
+        note
       }
       nextToken
     }
@@ -409,12 +477,18 @@ export const deleteTeacher = `mutation DeleteTeacher(
   deleteTeacher(input: $input, condition: $condition) {
     id
     email
+    name
+    note
     mentor {
       id
       email
+      name
+      note
       principal {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -424,6 +498,7 @@ export const deleteTeacher = `mutation DeleteTeacher(
       items {
         id
         name
+        note
       }
       nextToken
     }
@@ -437,12 +512,17 @@ export const createStudent = `mutation CreateStudent(
   createStudent(input: $input, condition: $condition) {
     id
     name
+    note
     teacher {
       id
       email
+      name
+      note
       mentor {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -451,6 +531,8 @@ export const createStudent = `mutation CreateStudent(
     records {
       items {
         id
+        skillId
+        note
       }
       nextToken
     }
@@ -464,12 +546,17 @@ export const updateStudent = `mutation UpdateStudent(
   updateStudent(input: $input, condition: $condition) {
     id
     name
+    note
     teacher {
       id
       email
+      name
+      note
       mentor {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -478,6 +565,8 @@ export const updateStudent = `mutation UpdateStudent(
     records {
       items {
         id
+        skillId
+        note
       }
       nextToken
     }
@@ -491,12 +580,17 @@ export const deleteStudent = `mutation DeleteStudent(
   deleteStudent(input: $input, condition: $condition) {
     id
     name
+    note
     teacher {
       id
       email
+      name
+      note
       mentor {
         id
         email
+        name
+        note
       }
       members {
         nextToken
@@ -505,6 +599,8 @@ export const deleteStudent = `mutation DeleteStudent(
     records {
       items {
         id
+        skillId
+        note
       }
       nextToken
     }
@@ -517,32 +613,21 @@ export const createRecord = `mutation CreateRecord(
 ) {
   createRecord(input: $input, condition: $condition) {
     id
-    skill {
-      id
-      name
-      skillset {
-        id
-        name
-      }
-    }
+    skillId
+    note
     student {
       id
       name
+      note
       teacher {
         id
         email
+        name
+        note
       }
       records {
         nextToken
       }
-    }
-    activities {
-      items {
-        id
-        datetime
-        rate
-      }
-      nextToken
     }
   }
 }
@@ -553,32 +638,21 @@ export const updateRecord = `mutation UpdateRecord(
 ) {
   updateRecord(input: $input, condition: $condition) {
     id
-    skill {
-      id
-      name
-      skillset {
-        id
-        name
-      }
-    }
+    skillId
+    note
     student {
       id
       name
+      note
       teacher {
         id
         email
+        name
+        note
       }
       records {
         nextToken
       }
-    }
-    activities {
-      items {
-        id
-        datetime
-        rate
-      }
-      nextToken
     }
   }
 }
@@ -589,32 +663,21 @@ export const deleteRecord = `mutation DeleteRecord(
 ) {
   deleteRecord(input: $input, condition: $condition) {
     id
-    skill {
-      id
-      name
-      skillset {
-        id
-        name
-      }
-    }
+    skillId
+    note
     student {
       id
       name
+      note
       teacher {
         id
         email
+        name
+        note
       }
       records {
         nextToken
       }
-    }
-    activities {
-      items {
-        id
-        datetime
-        rate
-      }
-      nextToken
     }
   }
 }
@@ -625,22 +688,10 @@ export const createActivity = `mutation CreateActivity(
 ) {
   createActivity(input: $input, condition: $condition) {
     id
+    recordId
     datetime
     rate
-    record {
-      id
-      skill {
-        id
-        name
-      }
-      student {
-        id
-        name
-      }
-      activities {
-        nextToken
-      }
-    }
+    note
   }
 }
 `;
@@ -650,22 +701,10 @@ export const updateActivity = `mutation UpdateActivity(
 ) {
   updateActivity(input: $input, condition: $condition) {
     id
+    recordId
     datetime
     rate
-    record {
-      id
-      skill {
-        id
-        name
-      }
-      student {
-        id
-        name
-      }
-      activities {
-        nextToken
-      }
-    }
+    note
   }
 }
 `;
@@ -675,22 +714,10 @@ export const deleteActivity = `mutation DeleteActivity(
 ) {
   deleteActivity(input: $input, condition: $condition) {
     id
+    recordId
     datetime
     rate
-    record {
-      id
-      skill {
-        id
-        name
-      }
-      student {
-        id
-        name
-      }
-      activities {
-        nextToken
-      }
-    }
+    note
   }
 }
 `;

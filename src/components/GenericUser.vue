@@ -3,7 +3,7 @@
     <div class="nav-header">
       <i :class="roleUserIcon"></i>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item>{{roleUser.name}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{roleUser.email}}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <h1 />
@@ -12,12 +12,13 @@
     </div>
 
     <el-table :data="getMembers()" stripe style="width: 100%" @row-click="onRowClick">
-      <el-table-column label="名称" prop="name"></el-table-column>
+      <el-table-column label="Email" prop="email"></el-table-column>
+      <el-table-column label="姓名" prop="name"></el-table-column>
       <el-table-column label="备注" prop="note"></el-table-column>
       <!-- <el-table-column label="状态" prop="status"></el-table-column> -->
       <el-table-column align="right">
         <template slot="header">
-          <el-button size="mini" type="primary" icon="el-icon-plus" @click="onInvite">添加学生</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-plus" @click="onInvite">邀请加入</el-button>
         </template>
         <template slot-scope="scope">
           <el-button size="mini" icon="el-icon-edit" @click="onEdit(scope.$index, scope.row)"></el-button>
@@ -37,6 +38,13 @@
       :before-close="handleClose"
     >
       <el-form :model="memberForm" :rules="formRules" ref="memberForm" status-icon>
+        <el-form-item label="Email" :label-width="formLabelWidth" prop="email">
+          <el-input
+            v-model="memberForm.email"
+            autocomplete="off"
+            :disabled="memberForm.emaildisabled"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
           <el-input v-model="memberForm.name" autocomplete="off"></el-input>
         </el-form-item>
@@ -53,22 +61,18 @@
 </template>
 
 <script>
+import { createUserProxy } from "../utils/UserUtil";
 import {
   getGenericUserProxy,
-  getGenericUserByEmailProxy
+  getGenericUserByEmailProxy,
+  createGenericUserProxy,
+  updateGenericUserProxy,
+  deleteGenericUserProxy
 } from "../utils/GenericUserUtil";
-import {
-  createStudentProxy,
-  updateStudentProxy,
-  deleteStudentProxy
-} from "../utils/TeacherUtil";
 
 export default {
   props: {
-    role: {
-      default: 'teacher',
-      type: String
-    },
+    role: String,
     id: String
   },
   async created() {
@@ -94,25 +98,75 @@ export default {
       return "el-icon-user";
     },
     memberIcon() {
-      return 'el-icon-view';
+      switch (this.role) {
+        case 'admin':
+          return 'el-icon-school';
+        case 'principal':
+          return 'el-icon-medal';
+        case 'mentor':
+          return 'el-icon-timer';
+        case 'teacher':
+          return 'el-icon-view';
+        default:
+          return '';
+      }
     },
     memberName() {
-      return '学生';
+      switch (this.role) {
+        case 'admin':
+          return '校长';
+        case 'principal':
+          return '督导';
+        case 'mentor':
+          return '教师';
+        case 'teacher':
+          return '学生';
+        default:
+          return '';
+      }
     },
     memberRole() {
-      return 'student';
+      switch (this.role) {
+        case 'admin':
+          return 'principal';
+        case 'principal':
+          return 'mentor';
+        case 'mentor':
+          return 'teacher';
+        case 'teacher':
+          return 'student';
+        default:
+          return '';
+      }
     }
   },
   data() {
+    const validateEmail = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("Email 地址不能为空"));
+      } else {
+        const members = this.getMembers();
+        const isExist = members.find(member => {
+          return member.email === value;
+        });
+        if (isExist) {
+          callback(new Error("Email 地址已存在"));
+        } else {
+          callback();
+        }
+      }
+    };
     return {
       roleUser: {},
       memberDialogVisible: false,
       memberDialogTitle: "",
       memberForm: {
+        email: "",
         name: "",
         note: ""
       },
       formRules: {
+        email: [{ required: true, validator: validateEmail, trigger: "blur" }],
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         note: []
       },
@@ -129,27 +183,43 @@ export default {
     },
     onInvite() {
       this.memberForm.id = "";
+      this.memberForm.email = "";
       this.memberForm.name = "";
       this.memberForm.note = "";
-      this.memberDialogTitle = "添加";
+      this.memberForm.emaildisabled = false;
+      this.memberDialogTitle = "邀请";
       this.memberDialogVisible = true;
     },
     onEdit(index, row) {
       this.memberForm.id = row.id;
+      this.memberForm.email = row.email;
       this.memberForm.name = row.name;
       this.memberForm.note = row.note;
+      this.memberForm.emaildisabled = true;
       this.memberDialogTitle = "编辑";
       this.memberDialogVisible = true;
     },
     async onConfirm() {
       const userId = this.memberForm.id;
+      const userEmail = this.memberForm.email;
       const userName = this.memberForm.name;
       const userNote = this.memberForm.note;
+      const memberRole = this.memberRole;
       if (!userId) {
         try {
-          // add user in members
-          const newMember = await createStudentProxy(
+          // create user in user table
+          const newUser = await createUserProxy(
             this.$Amplify,
+            userEmail,
+            userName,
+            memberRole
+          );
+          console.log(newUser);
+          // add user in members
+          const newMember = await createGenericUserProxy(
+            memberRole,
+            this.$Amplify,
+            userEmail,
             this.roleUser.id,
             userName,
             userNote
@@ -161,9 +231,11 @@ export default {
       } else {
         try {
           // edit member
-          const editedMember = await updateStudentProxy(
+          const editedMember = await updateGenericUserProxy(
+            memberRole,
             this.$Amplify,
             userId,
+            userEmail,
             userName,
             userNote
           );
@@ -189,6 +261,7 @@ export default {
       this.$router.push({
         name: this.memberRole,
         params: {
+          role: this.memberRole,
           id: row.id
         }
       });
@@ -204,7 +277,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          deleteStudentProxy(this.$Amplify, row.id)
+          deleteGenericUserProxy(this.memberRole, this.$Amplify, row.id)
             .then(() => {
               getGenericUserProxy(
                 this.role,

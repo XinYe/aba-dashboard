@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-table :data="getActivities()" stripe>
+    <el-table :data="activities" stripe>
       <el-table-column prop="datetime" label="日期"></el-table-column>
       <el-table-column prop="rate" label="分数"></el-table-column>
     </el-table>
     <h2/>
     <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">Add</el-button>
-    <el-button type="primary" icon="el-icon-data-analysis" v-on:click="getChartClick">Trends</el-button>
+    <el-button type="success" icon="el-icon-data-analysis" v-on:click="onChartClick">Trends</el-button>
     <!-- <el-button type="primary" icon="el-icon-data-analysis" @click="dialogVisible = true">Trends</el-button> -->
 
     <el-dialog title="Add" :visible.sync="dialogFormVisible" width="320px">
@@ -24,7 +24,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="getAddClick()">Confirm</el-button>
+        <el-button type="primary" @click="onAddClick()">Confirm</el-button>
       </span>
     </el-dialog>
 
@@ -40,16 +40,19 @@
 <script>
 import Vue from "vue";
 import Chart from "./Chart.vue";
+import { getActivitiesByRecordIdProxy, createActivityProxy } from "../utils/StudentUtil";
 
 export default Vue.extend({
   components: {
     Chart
   },
   props: {
-    name: String
+    record: Object,
+    student: Object
   },
   data() {
     return {
+      activities: [],
       dialogVisible: false,
       dialogFormVisible: false,
       form: {
@@ -59,39 +62,40 @@ export default Vue.extend({
       formLabelWidth: "50px"
     };
   },
+  async created() {
+    this.activities = await getActivitiesByRecordIdProxy(this.$Amplify, this.record.id);
+    console.log(this.activities);
+  },
   methods: {
-    student() {
-      return this.$data.appContext.curStudent;
-    },
-    getActivities() {
-      const skillName = this.name;
-      const records = this.student().records;
-      const curRecord = records.find(record => {
-        return record.skill === skillName;
-      });
-      if (curRecord) {
-        return curRecord.activities;
-      } else {
-        return [];
-      }
-    },
+    // getActivities() {
+    //   const skillName = this.name;
+    //   const records = this.student.records;
+    //   const curRecord = records.find(record => {
+    //     return record.skill === skillName;
+    //   });
+    //   if (curRecord) {
+    //     return curRecord.activities;
+    //   } else {
+    //     return [];
+    //   }
+    // },
     getColumns() {
-      const activities = this.getActivities();
+      // const activities = this.getActivities();
       const columns = [];
-      activities.forEach(activity => {
+      this.activities.forEach(activity => {
         columns.push(activity.datetime);
       });
       return JSON.stringify(columns);
     },
     getDatasets() {
-      const activities = this.getActivities();
+      // const activities = this.getActivities();
       const data = [];
-      activities.forEach(activity => {
+      this.activities.forEach(activity => {
         data.push(activity.rate);
       });
       const dataset = [
         {
-          label: this.name,
+          label: this.record.skillName,
           borderColor: "lightblue",
           data: data
         }
@@ -111,7 +115,7 @@ export default Vue.extend({
       //     }
       // ]);
     },
-    getAddClick() {
+    async onAddClick() {
         this.dialogFormVisible = false;
 
         const pickedDate = this.form.date;
@@ -119,13 +123,14 @@ export default Vue.extend({
         const month = pickedDate.getMonth() + 1;
         const day = pickedDate.getDate();
         
-        const activities = this.getActivities();
-        activities.push({
-          datetime: `${year}-${month}-${day}`,
-          rate: this.form.rate
-        });
+        const newActivity = await createActivityProxy(this.$Amplify, this.record.id,
+          `${year}-${month}-${day}`, this.form.rate, "ui"
+        );
+        if (newActivity) {
+          this.activities.push(newActivity);
+        }
     },
-    getChartClick() {
+    onChartClick() {
       this.$router.push({
         name: "chart",
         params: {
