@@ -119,9 +119,15 @@ export default {
       )
         .then(res => {
           const skillsets = [];
+          res.data.listSkillSets.items.sort((item1, item2) => {
+            return item1.name < item2.name? -1:1;
+          });
           res.data.listSkillSets.items.forEach(skillSet => {
             const skills = skillSet.skills.items;
             skills.forEach(skill => {
+              skillSet.skills.items.sort((item1, item2) => {
+                return item1.name < item2.name? -1:1;
+              });
               skill.skillSet = {
                 id: skillSet.id,
                 name: skillSet.name,
