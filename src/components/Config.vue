@@ -114,19 +114,25 @@ export default {
     //   }
     // },
     fetchSkillSets() {
+      const loading = this.$loading({
+        lock: true,
+        // text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(listSkillSets, {})
       )
         .then(res => {
           const skillsets = [];
           res.data.listSkillSets.items.sort((item1, item2) => {
-            return item1.name < item2.name? -1:1;
+            return item1.name < item2.name ? -1 : 1;
           });
           res.data.listSkillSets.items.forEach(skillSet => {
             const skills = skillSet.skills.items;
             skills.forEach(skill => {
               skillSet.skills.items.sort((item1, item2) => {
-                return item1.name < item2.name? -1:1;
+                return item1.name < item2.name ? -1 : 1;
               });
               skill.skillSet = {
                 id: skillSet.id,
@@ -146,6 +152,9 @@ export default {
         })
         .catch(e => {
           console.error(`Error listing SkillSets`, e);
+        })
+        .finally(() => {
+          loading.close();
         });
     },
     // fetchSkillSet(skillSet, resolve) {
