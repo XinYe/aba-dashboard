@@ -50,8 +50,8 @@ export default {
   data() {
     return {
       form: {
-        username: "amleaf@126.com",
-        password: "Aba123456"
+        username: "",
+        password: ""
       }
     };
   }
