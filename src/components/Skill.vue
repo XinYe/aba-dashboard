@@ -64,6 +64,9 @@ export default Vue.extend({
   },
   async created() {
     this.activities = await getActivitiesByRecordIdProxy(this.$Amplify, this.record.id);
+    this.activities.sort((item1, item2) => {
+      return new Date(item1.datetime) < new Date(item2.datetime) ? -1 : 1;
+    });
     console.log(this.activities);
   },
   methods: {
