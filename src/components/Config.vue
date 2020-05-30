@@ -121,7 +121,10 @@ export default {
         background: "rgba(0, 0, 0, 0.7)"
       });
       this.$Amplify.API.graphql(
-        this.$Amplify.graphqlOperation(listSkillSets, {})
+        this.$Amplify.graphqlOperation(listSkillSets, {
+          filter: null,
+          limit: 100
+        })
       )
         .then(res => {
           const skillsets = [];
