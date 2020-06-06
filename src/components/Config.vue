@@ -127,28 +127,12 @@ export default {
         })
       )
         .then(res => {
-          const skillsets = [];
-          res.data.listSkillSets.items.sort((item1, item2) => {
+          const skillsets = res.data.listSkillSets.items;
+          skillsets.sort((item1, item2) => {
             return item1.name < item2.name ? -1 : 1;
           });
-          res.data.listSkillSets.items.forEach(skillSet => {
-            const skills = skillSet.skills.items;
-            skills.forEach(skill => {
-              skillSet.skills.items.sort((item1, item2) => {
-                return item1.name < item2.name ? -1 : 1;
-              });
-              skill.skillSet = {
-                id: skillSet.id,
-                name: skillSet.name,
-                skills: skillSet.skills.items
-              };
-            });
-            skillsets.push({
-              id: skillSet.id,
-              name: skillSet.name,
-              hasSkill: skills.length > 0,
-              skills: skills
-            });
+          skillsets.forEach(skillSet => {
+            skillSet.hasSkill = skillSet.skills.items.length > 0;
           });
           this.skillsets = skillsets;
           console.info(`SkillSets successfully listed`, this.skillsets);
@@ -169,6 +153,9 @@ export default {
       )
         .then(res => {
           const skills = res.data.getSkillSet.skills.items;
+          skills.sort((item1, item2) => {
+            return item1.name < item2.name ? -1 : 1;
+          });
           skills.forEach(skill => {
             skill.skillSet = skillSet;
           });
