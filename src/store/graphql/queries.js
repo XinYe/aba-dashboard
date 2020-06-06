@@ -1,11 +1,11 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getSkillSet = `query GetSkillSet($id: ID!) {
+export const getSkillSet = `query GetSkillSet($id: ID!, $limit: Int) {
   getSkillSet(id: $id) {
     id
     name
-    skills {
+    skills(limit: $limit) {
       items {
         id
         name
