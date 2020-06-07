@@ -1,0 +1,28 @@
+{
+    "items": [
+        {
+            "name": "赵督导",
+            "email": "zhao@mentor.com",
+            "invitor": "zhao@school-a.com",
+            "status": "Accepted"
+        },
+        {
+            "name": "钱督导",
+            "email": "qian@mentor.com",
+            "invitor": "zhao@school-a.com",
+            "status": "Accepted"
+        },
+        {
+            "name": "孙督导",
+            "email": "sun@mentor.com",
+            "invitor": "zhao@school-a.com",
+            "status": "Pending"
+        },
+        {
+            "name": "李督导",
+            "email": "li@mentor.com",
+            "invitor": "qian@school-b.com",
+            "status": "Pending"
+        }
+    ]
+}

@@ -1,0 +1,73 @@
+type SkillSet @model {
+  id: ID!
+  name: String!
+  skills: [Skill] @connection(name: "SkillSetSkills")
+}
+type Skill @model {
+  id: ID!
+  name: String!
+  skillset: SkillSet @connection(name: "SkillSetSkills")
+}
+type User @model
+@key(name: "byEmail", fields: ["email"], queryField: "getUserByEmail") {
+  id: ID!
+  email: String!
+  name: String!
+  role: String!
+}
+type Admin @model
+@key(name: "byEmail", fields: ["email"], queryField: "getAdminByEmail") {
+  id: ID!
+  email: String!
+  name: String!
+  note: String
+  members: [Principal] @connection(name: "AdminPrincipals")
+}
+type Principal @model
+@key(name: "byEmail", fields: ["email"], queryField: "getPrincipalByEmail") {
+  id: ID!
+  email: String!
+  name: String!
+  note: String
+  admin: Admin @connection(name: "AdminPrincipals")
+  members: [Mentor] @connection(name: "PrincipalMentors")
+}
+type Mentor @model
+@key(name: "byEmail", fields: ["email"], queryField: "getMentorByEmail") {
+  id: ID!
+  email: String!
+  name: String!
+  note: String
+  principal: Principal @connection(name: "PrincipalMentors")
+  members: [Teacher] @connection(name: "MentorTeachers")
+}
+type Teacher @model
+@key(name: "byEmail", fields: ["email"], queryField: "getTeacherByEmail") {
+  id: ID!
+  email: String!
+  name: String!
+  note: String
+  mentor: Mentor @connection(name: "MentorTeachers")
+  members: [Student] @connection(name: "TeacherStudents")
+}
+type Student @model {
+  id: ID!
+  name: String!
+  note: String
+  teacher: Teacher @connection(name: "TeacherStudents")
+  records: [Record] @connection(name: "StudentRecords")
+}
+type Record @model {
+  id: ID!
+  skillId: String!
+  note: String
+  student: Student @connection(name: "StudentRecords")
+}
+type Activity @model
+@key(name: "byRecordId", fields: ["recordId"], queryField: "getActivitiesByRecordId") {
+  id: ID!
+  recordId: String!
+  datetime: String!
+  rate: String!
+  note: String
+}

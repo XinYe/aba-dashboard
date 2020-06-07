@@ -1,18 +1,27 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <component :is="loginRole"></component>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    About: () => import('@/views/About.vue'),
+    Admin: () => import('@/components/Admin.vue'),
+    Principal: () => import('@/components/Principal.vue'),
+    Mentor: () => import('@/components/Mentor.vue'),
+    Teacher: () => import('@/components/Mentor.vue')
+  },
+  computed: {
+    loginRole() {
+      if (this.$store.state.user) {
+        return this.$store.state.user.role;
+      } else {
+        return 'about';
+      }
+    }
   }
-}
+};
 </script>

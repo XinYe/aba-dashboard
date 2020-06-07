@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "abadashboardapi",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authabadashboard42c01b8c",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
