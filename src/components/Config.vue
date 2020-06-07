@@ -313,7 +313,7 @@ export default {
       }
       if (
         !this.checkInputDuplicated(
-          this.dialog.skillSet.skills,
+          this.dialog.skillSet.skills.items,
           this.dialog.skill.name
         )
       ) {
@@ -348,7 +348,7 @@ export default {
       // tbd
       if (
         !this.checkInputDuplicated(
-          this.dialog.skillSet.skills,
+          this.dialog.skillSet.skills.items,
           this.dialog.skill.name
         )
       ) {
