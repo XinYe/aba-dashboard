@@ -33,6 +33,13 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/skillset/:id',
+    name: 'skillset',
+    component: () => import('@/components/ConfigSkillSet.vue'),
+    meta: { requiresAuth: true },
+    props: true
+  },
+  {
     path: '/admin/:id',
     name: 'admin',
     component: () => import('@/components/Admin.vue'),
