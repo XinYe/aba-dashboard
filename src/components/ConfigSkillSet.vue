@@ -150,13 +150,13 @@ export default {
         this.$Amplify.graphqlOperation(createSkill, {
           input: {
             name: this.dialog.skill.name,
-            skillSkillsetId: this.dialog.skillSet.id
+            skillSkillsetId: this.id
           }
         })
       )
         .then(res => {
           console.info(`Skill created`, res);
-          //   this.fetchSkillSets();
+          this.fetchSkillSet();
         })
         .catch(e => {
           console.error(`Error creating Skill`, e);
