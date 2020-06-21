@@ -1,6 +1,7 @@
 <template>
   <div class="page-body">
     <el-table :data="skillsets" row-key="id" border @row-click="onRowClick">
+      <el-table-column type="index" width="40" />
       <el-table-column prop="name" label="技能类型" />
       <el-table-column align="right" width="130">
         <template slot="header">
@@ -26,7 +27,7 @@
     <el-dialog :title="dialogCaption" :visible.sync="dialog.visible">
       <el-form>
         <el-form-item label="技能类型">
-          <el-input v-model="dialog.skillSet.name"/>
+          <el-input v-model="dialog.skillSet.name" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">

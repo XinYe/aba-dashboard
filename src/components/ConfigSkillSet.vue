@@ -1,6 +1,7 @@
 <template>
   <div class="page-body">
     <el-table :data="skills" row-key="id" border>
+      <el-table-column type="index" width="40" />
       <el-table-column prop="name" :label="name" />
       <el-table-column align="right" width="130">
         <template slot="header">
