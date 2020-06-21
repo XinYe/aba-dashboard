@@ -30,7 +30,7 @@
           <el-input v-model="name" disabled />
         </el-form-item>
         <el-form-item label="技能名称">
-          <el-input v-model="dialog.skill.name" autocomplete="off" clearable />
+          <el-input v-model="dialog.skill.name" autocomplete="off" clearable  @change="onEnter" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -78,6 +78,9 @@ export default {
     }
   },
   methods: {
+    onEnter: function() {
+       this.onOk();
+    },
     fetchSkillSet() {
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(getSkillSet, {
@@ -191,7 +194,8 @@ export default {
             return skill.id === this.dialog.skill.id;
           });
           if (editingSkill) {
-            editingSkill.name = this.dialog.skill.name;
+            // editingSkill.name = this.dialog.skill.name;
+            this.fetchSkillSet();
           } else {
             console.error(
               "failed to find skill to edit from id: " + this.dialog.skill.id
@@ -220,7 +224,8 @@ export default {
               return skill.id === deletingSkill.id;
           });
           if (deleteIndex >= 0) {
-              this.skills.splice(deleteIndex, 1);
+              // this.skills.splice(deleteIndex, 1);
+              this.fetchSkillSet();
           } else {
               console.error(
                 "failed to find skill to remove from id: " + deletingSkill.id

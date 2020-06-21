@@ -27,7 +27,7 @@
     <el-dialog :title="dialogCaption" :visible.sync="dialog.visible">
       <el-form>
         <el-form-item label="技能类型">
-          <el-input v-model="dialog.skillSet.name" />
+          <el-input v-model="dialog.skillSet.name" @change="onEnter" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -75,6 +75,9 @@ export default {
     }
   },
   methods: {
+    onEnter: function() {
+       this.onOk();
+    },
     onRowClick(row, column) {
       if (!column.property) {
         return;
