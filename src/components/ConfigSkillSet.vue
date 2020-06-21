@@ -30,13 +30,16 @@
           <el-input v-model="name" disabled />
         </el-form-item>
         <el-form-item label="技能名称">
-          <el-input v-model="dialog.skill.name" autocomplete="off" clearable  @change="onEnter" />
+          <el-input v-model="dialog.skill.name" autocomplete="off" clearable  @keyup.enter.native="onEnter" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialog.visible = false">取消</el-button>
         <el-button type="primary" @click="onOk()">确定</el-button>
       </span>
+      <div>
+        <el-checkbox v-show="dialog.show_continue_create" v-model="dialog.continue_create">继续新增</el-checkbox>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -62,7 +65,9 @@ export default {
     return {
       skills: [],
       dialog: {
-        skill: {}
+        skill: {},
+        show_continue_create: false,
+        continue_create: false
       }
     };
   },
@@ -78,7 +83,8 @@ export default {
     }
   },
   methods: {
-    onEnter: function() {
+    onEnter: function(value) {
+      console.log(value);
        this.onOk();
     },
     fetchSkillSet() {
@@ -119,7 +125,9 @@ export default {
         visible: true,
         mode: SkillEditMode.Skill_New,
         skillSet: skillSet,
-        skill: {}
+        skill: {},
+        show_continue_create: true,
+        continue_create: false
       };
     },
     onEditSkill(skill) {
@@ -166,7 +174,11 @@ export default {
           console.error(`Error creating Skill`, e);
         })
         .finally(() => {
-          this.dialog.visible = false;
+          if (this.dialog.continue_create) {
+            this.dialog.skill.name = "";
+          } else {
+            this.dialog.visible = false;
+          }
         });
     },
     editSkill() {
