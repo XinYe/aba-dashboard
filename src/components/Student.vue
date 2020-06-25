@@ -9,7 +9,12 @@
     <h1 />
     <div>
       <i class="el-icon-basketball">技能列表</i>
-      <el-button type="primary" icon="el-icon-setting" style="float: right" @click="skillDialogVisible = true">技能管理</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-setting"
+        style="float: right"
+        @click="skillDialogVisible = true"
+      >技能管理</el-button>
     </div>
 
     <el-tabs closable @edit="onSkillConfig">
@@ -19,7 +24,7 @@
         :name="index.toString()"
         :key="index"
       >
-        <skill :record="record" :student="student"/>
+        <skill :record="record" :student="student" />
       </el-tab-pane>
     </el-tabs>
 
@@ -145,7 +150,7 @@ export default Vue.extend({
     },
     async onSkillConfigConfirm() {
       this.isProcessing = true;
-      for (let i=0; i<this.addedSkills.length; i++) {
+      for (let i = 0; i < this.addedSkills.length; i++) {
         const addedSkill = this.addedSkills[i];
         await createRecordProxy(
           this.$Amplify,
@@ -161,7 +166,10 @@ export default Vue.extend({
     },
     fetchSkillSets() {
       this.$Amplify.API.graphql(
-        this.$Amplify.graphqlOperation(listSkillSets, {})
+        this.$Amplify.graphqlOperation(listSkillSets, {
+          // filter: null,
+          limit: 100
+        })
       )
         .then(res => {
           const skillSets = [];
@@ -170,8 +178,13 @@ export default Vue.extend({
             skills.forEach(skill => {
               skill.skillSet = skillSet;
             });
-            skillSet.skills = skills;
+            skillSet.skills = skills.sort((item1, item2) => {
+              return item1.name < item2.name ? -1 : 1;
+            });
             skillSets.push(skillSet);
+          });
+          skillSets.sort((item1, item2) => {
+            return item1.name < item2.name ? -1 : 1;
           });
           this.skillSets = skillSets;
           console.info(`SkillSets successfully listed`, this.skillSets);
@@ -184,13 +197,16 @@ export default Vue.extend({
       const student = await getStudentProxy(this.$Amplify, this.id);
       let records = [];
       if (student && student.records) {
-        records = student.records.items;
+        records = records.concat(student.records.items);
       }
       records.forEach(record => {
         // it's a workaround to append skill name,
         // as the local mock api has unknow issue to work with the record object with skill connection
         // so use skillId as the connection reference instead
         record.skillName = this.getSkillName(record.skillId);
+      });
+      records.sort((item1, item2) => {
+        return item1.skillName < item2.skillName ? -1 : 1;
       });
       this.student = {
         id: student.id,
@@ -206,9 +222,9 @@ export default Vue.extend({
       });
     },
     getSkillName(skillId) {
-      for (let i=0; i<this.skillSets.length; i++) {
+      for (let i = 0; i < this.skillSets.length; i++) {
         const skills = this.skillSets[i].skills;
-        for (let j=0; j<skills.length; j++) {
+        for (let j = 0; j < skills.length; j++) {
           const skill = skills[j];
           if (skill.id === skillId) {
             return skill.name;
