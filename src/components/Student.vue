@@ -29,16 +29,17 @@
     </el-tabs>
 
     <el-dialog title="选择技能" :visible.sync="skillDialogVisible">
-      <el-tree
-        v-loading="isProcessing"
-        :data="skillSets"
-        :props="props"
-        node-key="id"
-        default-expand-all
-        :default-checked-keys="recordedSkills"
-        show-checkbox
-        @check-change="onSkillCheckChange"
-      ></el-tree>
+      <div class="el-dialog-div">
+        <el-tree
+          v-loading="isProcessing"
+          :data="skillSets"
+          :props="props"
+          node-key="id"
+          :default-checked-keys="recordedSkills"
+          show-checkbox
+          @check-change="onSkillCheckChange"
+        ></el-tree>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="skillDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="onSkillConfigConfirm">确定</el-button>
@@ -242,5 +243,10 @@ export default Vue.extend({
 }
 .nav-header {
   display: flex;
+}
+.el-dialog-div {
+  height: 50vh;
+  overflow: auto;
+  border: solid 1px #E4E7ED;
 }
 </style>

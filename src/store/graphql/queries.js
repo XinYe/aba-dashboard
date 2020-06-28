@@ -24,7 +24,7 @@ export const listSkillSets = `query ListSkillSets(
     items {
       id
       name
-      skills {
+      skills(limit: $limit) {
         items {
           id
           name
