@@ -166,7 +166,7 @@ export default Vue.extend({
       await this.fetchStudent();
     },
     fetchSkillSets() {
-      this.$Amplify.API.graphql(
+      return this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(listSkillSets, {
           // filter: null,
           limit: 100
